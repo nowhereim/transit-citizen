@@ -1,0 +1,22 @@
+{
+  "name": "asoproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nowhereim/ASOproject.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nowhereim/ASOproject/issues"
+  },
+  "homepage": "https://github.com/nowhereim/ASOproject#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
