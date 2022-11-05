@@ -3,7 +3,7 @@ require('dotenv').config();
 const request = require('request');
 const CryptoJS = require('crypto-js');
 
-class SendMessage {
+class SensServices {
   send_message = (phone, message) => {
     var user_phone_number = phone;                 // 수신 번호
     var resultCode = 404;
@@ -55,4 +55,4 @@ class SendMessage {
 }
 
 
-module.exports = SendMessage;
+module.exports = SensServices;

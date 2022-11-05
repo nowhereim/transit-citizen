@@ -1,7 +1,15 @@
 const express = require("express");
+const routes = require("./routes");
+const crypto = require("crypto");
 const app = express();
 const port = 3000;
 
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: false
+}));
+
+app.use(routes);
 // const request = require("request"); // npm install request
 
 // const url = "https://api.github.com/users/username"; // replace username with your username
@@ -52,6 +60,7 @@ console.log(X);
 // 백엔드 사이드 프로젝트 (webRTC)
 //swopenapi.seoul.go.kr/api/subway/sample/xml/realtimeStationArrival/1/5/%EA%B0%95%EB%82%A8
 
-http: app.listen(port, () => {
+
+app.listen(port, () => {
   console.log(port);
 });
