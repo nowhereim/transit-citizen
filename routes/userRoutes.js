@@ -22,7 +22,7 @@ const uploadMultipartData = multer({
     limits: { fileSize: 10 * 1024 * 1024 }, // 10MB로 제한
 }).single("profileImage");
 
-// 이미지 받기
+// 이미지 파일 및 유저 정보 받기
 router.post('/', (req, res) => {
     uploadMultipartData(req, res, async (error) => {
         if (error) {
@@ -39,6 +39,19 @@ router.post('/', (req, res) => {
 
         res.send('정보가 저장되었습니다');
     });
+});
+
+// 유저 정보 보내주기 (논의 필요)
+router.get('/:id', async (req, res) => {
+    try {
+        const users = await User.find({
+            _id: req.params.id
+        });
+        console.log(users);
+        res.json(users[0]);
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 module.exports = router;
