@@ -21,6 +21,7 @@
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "mongoose": "^6.7.2",
     "mysql2": "^2.3.3",
     "request": "^2.88.2",
     "sequelize": "^6.25.3",

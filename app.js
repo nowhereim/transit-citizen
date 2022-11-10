@@ -3,6 +3,10 @@ const routes = require("./routes");
 const crypto = require("crypto");
 const app = express();
 const port = 3000;
+const mongoConnect = require('./schemas') ;
+
+require('dotenv').config();   // .env 
+mongoConnect();               // 몽고 디비 연결
 
 app.use(express.json());
 app.use(express.urlencoded({
