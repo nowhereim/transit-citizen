@@ -1,7 +1,14 @@
 const express = require('express');
 const router = express.Router();
+
 const AuthRoutes = require('./authRoutes');
 const UserRoutes = require('./userRoutes');
+
+const kakaoRouter = require('./kakao.js');
+
+
+router.use('/login', kakaoRouter);
+
 
 // 휴대폰 인증 및 정보 수집
 router.use('/auth', AuthRoutes);
@@ -12,3 +19,7 @@ router.use('/user', UserRoutes);
 
 
 module.exports=router;
+
+
+
+
