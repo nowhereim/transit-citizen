@@ -6,25 +6,9 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    provider: {
+    refreshToken: {
         type: String,
         required: true
-    },
-    profileImage: {
-        type: String,
-        // required: true
-    },
-    phoneNumber: {
-        type: String,
-        // required: true
-    },
-    nickname: {
-        type: String,
-        // required: true
-    },
-    gender: {
-        type: Boolean, // 남: 0, 여: 1
-        // required: true
     },
     createdAt: {
         type: Date,
@@ -38,4 +22,4 @@ const userSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Token', userSchema);
