@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {  // async 새로 넣었음.
       res.status(401).send({ ok: false, message: "No authorized!" });
       return;
     }
-      
+    
     // 리팩터링 전입니다!!
     const refresh = await Token.findOne( { snsId: decoded.snsId } );
     const refreshResult = verify(refresh.refreshToken) // 최초에 회원가입(+로그인)에 성공했다면 refresh.refreshToken은 무조건 존재.

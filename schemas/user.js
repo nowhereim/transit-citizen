@@ -1,5 +1,8 @@
 var mongoose = require('mongoose');
 const { Schema } = mongoose;
+const moment = require("moment");
+require("moment-timezone");
+const now = moment().format("YYYY-MM-DD HH:mm:ss");
 
 const userSchema = new Schema({
     snsId: {
@@ -30,13 +33,13 @@ const userSchema = new Schema({
         type: String
     },
     createdAt: {
-        type: Date,
-        default: Date.now, // data 생성 당시의 시간
+        type: String,
+        defualt: now,
         required: true
     },
     updatedAt: {
-        type: Date,
-        default: Date.now,
+        type: String,
+        defualt: now,
         required: true
     }
 });
