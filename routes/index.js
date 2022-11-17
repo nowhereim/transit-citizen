@@ -7,7 +7,7 @@ const UserRoutes = require('./userRoutes');
 const kakaoRouter = require('./kakao.js');
 
 
-router.use('/login', kakaoRouter);
+router.use('/auth', kakaoRouter);
 
 
 // 휴대폰 인증 및 정보 수집

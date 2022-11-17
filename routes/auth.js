@@ -42,7 +42,7 @@ router.get("/naver/callback", passport.authenticate("naver", { session: false, f
 
     const user = await Users.findOne({ where: { snsId } });
     const token = jwt.sign({ userId: user.userId }, process.env.SECRET_KEY, { expiresIn: "20s", });
-    // const expires = new Date();
+    
 
     const userId = user.userId;    
     const refresh = await Tokens.findOne({ where: { userId } });
@@ -53,8 +53,9 @@ router.get("/naver/callback", passport.authenticate("naver", { session: false, f
     }
 
     console.log(token);
-    // expires.setMinutes(expires.getMinutes() + 600);
-    // res.cookie(process.env.COOKIE_NAME, `Bearer ${token}`, { expires: expires, });
+    const expires = new Date();
+    expires.setMinutes(expires.getMinutes() + 600);
+    res.cookie(process.env.COOKIE_NAME, `Bearer ${token}`, { expires: expires, });
     
     if (req.user.signup === true) {
       return res.redirect("/");

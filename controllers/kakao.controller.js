@@ -48,6 +48,7 @@ class KakaoController {
       console.log(kakaoUserInfo);
 
       const isUser = await this.kakaoRepository.findOneById(kakaoUserInfo.id);
+      console.log('isUser입니다' + isUser);
 
       if (isUser) { // 기존 유저
         const token = jwt.sign({ snsId: isUser.snsId }, process.env.SECRET_KEY, { expiresIn: "1h" } );
@@ -56,16 +57,28 @@ class KakaoController {
         if (!refresh) {const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {expiresIn: "24h",  });
           await Token.create({ snsId: isUser.snsId, refreshToken: refreshToken });
         }
-
+        console.log(token);
         return res.send({ jwtToken: token });
-      } else { // 새로운 유저
-        await this.kakaoRepository.createUser(kakaoUserInfo.id);
-        // const newUser = 
+    //     const expires = new Date();
+    // expires.setMinutes(expires.getMinutes() + 600);
+    // res.cookie(process.env.COOKIE_NAME, `Bearer ${token}`, { expires: expires, });
 
-        const token = jwt.sign({ snsId: newUser.snsId }, process.env.SECRET_KEY, { expiresIn: "1h" } );
+      } else { // 새로운 유저
+        const newOne = await this.kakaoRepository.createUser(kakaoUserInfo.id);
+        console.log('newOne입니다' + newOne);
+        const newUser = await this.kakaoRepository.findOneById(kakaoUserInfo.id);
+
+        const token = jwt.sign({ snsId: newUser.snsId }, process.env.SECRET_KEY, { expiresIn: "1h" });
+        const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {expiresIn: "24h", });
+        await Token.create({ snsId: newUser.snsId, refreshToken: refreshToken });
+
+        console.log(token);        
+        return res.send({ jwtToken: token });
+    //     const expires = new Date();
+    // expires.setMinutes(expires.getMinutes() + 600);
+    // res.cookie(process.env.COOKIE_NAME, `Bearer ${token}`, { expires: expires, });
       }
 
-      return res.send({ accessToken: kakaoToken });
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
