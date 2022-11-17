@@ -24,7 +24,10 @@ const userSchema = new Schema({
     },
     gender: {
         type: Boolean, // 남: 0, 여: 1
-        // required: true
+        // required: true    
+    },
+    status: {
+        type: String
     },
     createdAt: {
         type: Date,
