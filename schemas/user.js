@@ -26,6 +26,9 @@ const userSchema = new Schema({
         type: Boolean, // 남: 0, 여: 1
         // required: true
     },
+    status: {
+        type: String
+    },
     createdAt: {
         type: Date,
         default: Date.now, // data 생성 당시의 시간
