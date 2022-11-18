@@ -19,7 +19,3 @@ router.use('/user', UserRoutes);
 
 
 module.exports=router;
-
-
-
-
