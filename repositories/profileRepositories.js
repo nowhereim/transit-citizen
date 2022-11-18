@@ -5,7 +5,6 @@ class ProfileRepositories {
     editProfileInfo_DB = async (
         snsId,
         nickname,
-        gender,
         representProfile,
         profileImage,
         statusmessage
@@ -16,7 +15,6 @@ class ProfileRepositories {
                         { snsId },
                         { 
                             nickname, 
-                            gender, 
                             representProfile, 
                             profileImage, 
                             statusmessage  
@@ -52,7 +50,7 @@ class ProfileRepositories {
                 const deletedProfileData = await User.deleteOne({ snsId });
                 return deletedProfileData;
             } else {
-                throw new Error('snsId 값이 없으면 유저 프로필 정보를 지울 수 없습니다')
+                throw new Error('snsId 값이 없으면 유저 프로필 정보를 삭제할 수 없습니다')
             }
         } catch (error) {
             console.log(error.name);
