@@ -37,7 +37,7 @@ module.exports = async (req, res, next) => {  // async 새로 넣었음.
       console.log(refreshResult.ok);
       if (refreshResult.ok === false) {
         try {
-          await Token.deleteOne({ snsId: decoded.snsId }); // 또 같은 요청이 들어오면 에러날텐데? -> trycatch.
+          await Token.deleteOne({ snsId: decoded.snsId }); // 또 같은 요청이 들어오면 에러날텐데? --> trycatch.
           res.status(401).send({
             ok: false,
             message: "No authorized! 새로 로그인해주세요(1).",

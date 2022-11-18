@@ -18,7 +18,7 @@ class KakaoRepository {
   // };
 
   findOneById = async (id) => {
-    const exUser = await User.findById(id);
+    const exUser = await User.findOne({ snsId:id });
     return exUser;
   };
 
