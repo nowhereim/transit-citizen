@@ -7,6 +7,12 @@ const kakaoController = new KakaoController()
 
 router.get('/kakao/callback', kakaoController.getKakaoToken);
 
+
+router.get('/google/callback', kakaoController.getGoogleToken);
+
+
+router.get('/naver/callback', kakaoController.getNaverToken);
+
 // 프론트에게서 인가코드를 받는다 post_1
 // 서버에서 인가코드를 가지고 카톡에게서 토큰을 받는다.
 // 토큰을 클라이언트에게 보낸다.
@@ -20,8 +26,8 @@ router.get('/kakao/callback', kakaoController.getKakaoToken);
 
 // /naver =>/oauth/callback/kakao 인가코드 넘기는 url
 // kakao/member token 넘기는 url
-router.post('/kakao/callback', kakaoController.getKakaoUserInfo);
 
+// router.post('/kakao/callback', kakaoController.getKakaoUserInfo);
 
 // router.post('/kakao/parsing', kakaoController.kakao_parsing);
 // 예외조건넣기. 유저가 디비에 있으면 저장하지않기.
