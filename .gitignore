@@ -1,3 +1,5 @@
 node_modules
 package-lock.json
 .env
+middlewares/auth-middleware.js
+routes/test.js

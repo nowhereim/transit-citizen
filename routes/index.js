@@ -5,10 +5,11 @@ const AuthRoutes = require('./authRoutes');
 const UserRoutes = require('./userRoutes');
 
 const kakaoRouter = require('./kakao.js');
+const testRouter = require('./test.js');
 
 
 router.use('/auth', kakaoRouter);
-
+router.use('/test', testRouter);
 
 // 휴대폰 인증 및 정보 수집
 router.use('/auth', AuthRoutes);

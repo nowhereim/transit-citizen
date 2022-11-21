@@ -22,6 +22,17 @@ app.use(express.json());
 
 // app.use(passport.initialize());
 // passportConfig;
+app.use(function (req, res, next) {
+    res.set({
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': req.headers.origin,
+        'Access-Control-Allow-Methods': '*',
+        'Access-Control-Allow-Headers':
+            'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, authorization, refreshToken, cache-control',
+    });
+    next();
+});
+
 
 app.use(
     cors({
@@ -29,10 +40,10 @@ app.use(
     })
 );
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-});
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     next();
+// });
 
 
 app.use('/', routes);
