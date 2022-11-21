@@ -11,4 +11,4 @@ const cloudinaryConfig = (req, res, next) => {
     next();
 }
 
-module.exports = cloudinaryConfig;  
+module.exports = cloudinaryConfig;    
