@@ -13,23 +13,22 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    profileImage: {
-        type: String,
-        // required: true
-    },
     phoneNumber: {
-        type: String,
-        // required: true
+        type: String
+    },
+    representProfile: {
+        type: String
+    },
+    profileImage: {
+        type: Array
     },
     nickname: {
         type: String,
-        // required: true
     },
     gender: {
-        type: Boolean, // 남: 0, 여: 1
-        // required: true    
+        type: Boolean
     },
-    status: {
+    statusmessage: {
         type: String
     },
     status: {
