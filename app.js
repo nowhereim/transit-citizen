@@ -1,57 +1,33 @@
-
-const express = require('express');
-const Http = require('http');
-const routes = require('./routes');
-const cors = require('cors');
-const crypto = require("crypto");
-require('dotenv').config();
-
-const connect = require("./schemas");
-const cloudinaryConfig = require('./config/cloudconfig');
-connect();
-
-// const passport = require('passport');
-// const passportConfig = require('./passport');
-
+const express = require("express");
 const app = express();
-const http = Http.createServer(app);
-const port = 3000;
+const cors = require("cors");
+const server = require("http").createServer(app);
+const upload = require("./upload");
+const deleteim = require("./delete");
+require("dotenv").config();
 
-//app.config['JSON_AS_ASCII'] = False
-app.use(express.urlencoded({ extended: false }));
+app.use(cors());
+
+app.engine("ejs", require("ejs").__express);
 app.use(express.json());
 
-// app.use(passport.initialize());
-// passportConfig;
-app.use(function (req, res, next) {
-    res.set({
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Origin': req.headers.origin,
-        'Access-Control-Allow-Methods': '*',
-        'Access-Control-Allow-Headers':
-            'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, authorization, refreshToken, cache-control',
-    });
-    next();
+app.use(express.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
+
+app.get("/", (req, res) => {
+  res.render("socket"); // socket.ejs
 });
 
-app.use(cloudinaryConfig);
-
-app.use(
-    cors({
-        origin: '*',
-    })
-);
-
-// app.use((req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     next();
-// });
-
-
-app.use('/', routes);
-
-http.listen(port, () => {
-    console.log(`열려라 서버 : port ${port}`);
+app.post("/uploadFile", (req, res) => {
+  upload.single("image")(req, res, (err) => {
+    res.status(201).send("uploaded");
+  });
 });
 
-module.exports = http;
+app.post("/deleteFile", (req, res) => {
+  deleteim(req, res, () => {
+    res.status(201).send("deleted");
+  });
+});
+
+module.exports = server;
