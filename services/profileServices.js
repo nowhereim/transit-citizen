@@ -29,7 +29,6 @@ class ProfileServices {
         }
     }
 
-    // 이미지 업로드 서비스
     editUserImageProfileInfo = async ( snsId, representProfile, profileImage ) => {
         try {
 
