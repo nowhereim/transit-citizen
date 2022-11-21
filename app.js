@@ -7,6 +7,7 @@ const crypto = require("crypto");
 require('dotenv').config();
 
 const connect = require("./schemas");
+const cloudinaryConfig = require('./config/cloudconfig');
 connect();
 
 // const passport = require('passport');
@@ -33,6 +34,7 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.use(cloudinaryConfig);
 
 app.use(
     cors({

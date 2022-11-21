@@ -3,6 +3,8 @@ const router = express.Router();
 
 const AuthRoutes = require('./authRoutes');
 const UserRoutes = require('./userRoutes');
+const ProfileRoutes = require('./profileRoutes');
+
 
 const kakaoRouter = require('./kakao.js');
 const testRouter = require('./test.js');
@@ -11,16 +13,14 @@ const testRouter = require('./test.js');
 router.use('/auth', kakaoRouter);
 router.use('/test', testRouter);
 
-// 휴대폰 인증 및 정보 수집
+// 각종 인증 기능
 router.use('/auth', AuthRoutes);
 
-// 소셜 로그인 이후 과정
-// 유저 필수 정보 수집 ( 프로필 이미지 파일, 폰 번호, 닉네임, 성별 )
+// 유저 정보
 router.use('/user', UserRoutes);
+
+// 프로필 정보
+router.use('/profile', ProfileRoutes);
 
 
 module.exports=router;
-
-
-
-
