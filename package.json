@@ -36,6 +36,7 @@
     "passport-naver-v2": "^2.0.8",
     "qs": "^6.11.0",
     "request": "^2.88.2",
+    "request-promise": "^4.2.6",
     "sequelize": "^6.25.3",
     "sequelize-cli": "^6.5.2"
   }
