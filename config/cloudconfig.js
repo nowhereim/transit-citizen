@@ -9,6 +9,6 @@ const cloudinaryConfig = (req, res, next) => {
         api_secret: process.env.API_SECRET,
     });
     next();
-}
+} 
 
 module.exports = cloudinaryConfig;
