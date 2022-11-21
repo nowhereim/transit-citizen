@@ -9,12 +9,12 @@ const deleteim = require("./delete");
 const connect = require("./schemas");
 const cloudinaryConfig = require('./config/cloudconfig');
 require("dotenv").config();
-
+connect();
 
 const http = Http.createServer(app);
 const port = 3000;
 
-app.use(cors());
+// app.use(cors());
 
 app.engine("ejs", require("ejs").__express);
 app.use(express.json());
@@ -34,6 +34,12 @@ app.use(function (req, res, next) {
 });
 
 app.use(cloudinaryConfig);
+
+app.use(
+  cors({
+      origin: '*',
+  })
+);
 
 app.use('/', routes);
 
