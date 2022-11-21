@@ -327,5 +327,3 @@ io.on("connection", (socket) => {
     RedisMo.delarr(socket["nickname"]);
   });
 });
-
-// server.listen(port, () => {});
