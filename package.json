@@ -9,9 +9,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "scripts": {
-    "start": "nodemon app.js"
-  },
   "dependencies": {
     "@elastic/elasticsearch": "^8.5.0",
     "0d": "^0.0.1",

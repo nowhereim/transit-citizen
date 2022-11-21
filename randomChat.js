@@ -1,16 +1,10 @@
-const express = require("express");
-const app = express();
-const cors = require("cors");
-const port = 3000;
-const server = require("http").createServer(app);
+const server = require("./app");
 const crypto = require("crypto");
 const connect = require("./schemas");
 connect();
 require("dotenv").config();
-const RedisMo = require("./redisMo");
+const RedisMo = require("./functionstuff");
 const redis = require("redis");
-const upload = require("./upload");
-const deleteim = require("./delete");
 const redisClient = redis.createClient({
   legacyMode: true,
 });
@@ -25,36 +19,13 @@ redisClient.connect().then();
 const redisCli = redisClient.v4;
 // redisClient.auth(process.env.redisAuth);
 // redisCli.auth(process.env.redisAuth);
-app.use(cors());
+
 const io = require("socket.io")(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
     credentials: true,
   },
-});
-
-app.engine("ejs", require("ejs").__express);
-app.use(express.json());
-
-app.use(express.urlencoded({ extended: true }));
-app.set("view engine", "ejs");
-
-app.get("/", (req, res) => {
-  // 메인 페이지
-  res.render("socket"); // socket.ejs
-});
-
-app.post("/uploadFile", (req, res) => {
-  upload.single("image")(req, res, (err) => {
-    res.status(201).send("uploaded");
-  });
-});
-
-app.post("/deleteFile", (req, res) => {
-  deleteim(req, res, () => {
-    res.status(201).send("deleted");
-  });
 });
 
 const User = require("./schemas/user");
@@ -357,4 +328,4 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(port, () => {});
+// server.listen(port, () => {});
