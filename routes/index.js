@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const AuthRoutes = require('./authRoutes');
-const UserRoutes = require('./userRoutes');
+// const UserRoutes = require('./userRoutes');
 const ProfileRoutes = require('./profileRoutes');
 
 
@@ -17,7 +17,7 @@ router.use('/test', testRouter);
 router.use('/auth', AuthRoutes);
 
 // 유저 정보
-router.use('/user', UserRoutes);
+// router.use('/user', UserRoutes);
 
 // 프로필 정보
 router.use('/profile', ProfileRoutes);
