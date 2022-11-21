@@ -7,10 +7,11 @@ const ProfileRoutes = require('./profileRoutes');
 
 
 const kakaoRouter = require('./kakao.js');
+const testRouter = require('./test.js');
 
 
 router.use('/auth', kakaoRouter);
-
+router.use('/test', testRouter);
 
 // 각종 인증 기능
 router.use('/auth', AuthRoutes);
