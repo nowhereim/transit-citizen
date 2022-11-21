@@ -59,7 +59,7 @@ class KakaoController {
           await Token.create({ snsId: isUser.snsId, refreshToken: refreshToken });
         }
         console.log(token);
-        return res.send({ jwtToken: token });
+        return res.send({ jwtToken: token, message: '로그인하였습니다.' });
     //     const expires = new Date();
     // expires.setMinutes(expires.getMinutes() + 600);
     // res.cookie(process.env.COOKIE_NAME, `Bearer ${token}`, { expires: expires, });
@@ -74,7 +74,7 @@ class KakaoController {
         await Token.create({ snsId: newUser.snsId, refreshToken: refreshToken });
 
         console.log(token);        
-        return res.send({ jwtToken: token });
+        return res.send({ jwtToken: token, message: '로그인하였습니다.' });
     //     const expires = new Date();
     // expires.setMinutes(expires.getMinutes() + 600);
     // res.cookie(process.env.COOKIE_NAME, `Bearer ${token}`, { expires: expires, });
@@ -113,7 +113,7 @@ class KakaoController {
           await Token.create({ snsId: isUser.snsId, refreshToken: refreshToken });
         }
         console.log(token);
-        return res.send({ jwtToken: token });
+        return res.send({ jwtToken: token, message: '로그인하였습니다.' });
     //     const expires = new Date();
     // expires.setMinutes(expires.getMinutes() + 600);
     // res.cookie(process.env.COOKIE_NAME, `Bearer ${token}`, { expires: expires, });
@@ -128,7 +128,7 @@ class KakaoController {
         await Token.create({ snsId: newUser.snsId, refreshToken: refreshToken });
 
         console.log(token);        
-        return res.send({ jwtToken: token });
+        return res.send({ jwtToken: token, message: '로그인하였습니다.' });
     //     const expires = new Date();
     // expires.setMinutes(expires.getMinutes() + 600);
     // res.cookie(process.env.COOKIE_NAME, `Bearer ${token}`, { expires: expires, });
@@ -239,7 +239,7 @@ class KakaoController {
           await Token.create({ snsId: isUser.snsId, refreshToken: refreshToken });
         }
         console.log('jwtToken입니다', token);
-        return res.send({ jwtToken: token });
+        return res.send({ jwtToken: token, message: '로그인하였습니다.' });
     //     const expires = new Date();
     // expires.setMinutes(expires.getMinutes() + 600);
     // res.cookie(process.env.COOKIE_NAME, `Bearer ${token}`, { expires: expires, });
@@ -254,7 +254,7 @@ class KakaoController {
         await Token.create({ snsId: newUser.snsId, refreshToken: refreshToken });
 
         console.log('jwtToken입니다', token);        
-        return res.send({ jwtToken: token });
+        return res.send({ jwtToken: token, message: '로그인하였습니다.' });
     //     const expires = new Date();
     // expires.setMinutes(expires.getMinutes() + 600);
     // res.cookie(process.env.COOKIE_NAME, `Bearer ${token}`, { expires: expires, });
