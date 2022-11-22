@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-//const AuthRoutes = require('./authRoutes');
+const AuthRoutes = require('./authRoutes');
 const UserRoutes = require('./userRoutes');
 const ProfileRoutes = require('./profileRoutes');
 
@@ -14,7 +14,7 @@ router.use('/auth', kakaoRouter);
 router.use('/test', testRouter);
 
 // 각종 인증 기능
-// router.use('/auth', AuthRoutes);
+router.use('/auth2', AuthRoutes);
 
 // 유저 정보
 router.use('/user', UserRoutes);
