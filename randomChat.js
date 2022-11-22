@@ -161,7 +161,6 @@ io.on("connection", (socket) => {
             ranNum = ranNum + 1;
             const ranNum =
               userone + crypto.randomBytes(2).toString("hex") + usertwo;
-
             User.updateOne(
               { nickname: result[ranNum].nickName },
               { $unset: { location: "" } },
