@@ -47,7 +47,7 @@ module.exports = async (req, res, next) => {  // async 새로 넣었음.
         //     message: "No authorized! 새로 로그인해주세요(2).",
         //   }) };
         } else {   // 2. access token이 만료되고, refresh token은 만료되지 않은 경우 => 새로운 access token을 발급 후 클라에게 반환.
-          const newToken = jwt.sign({ snsId: decoded.snsId }, process.env.SECRET_KEY, { expiresIn: "15s", });
+          const newToken = jwt.sign({ snsId: decoded.snsId }, process.env.SECRET_KEY, { expiresIn: "24h", });
   
           res.status(200).send({
             ok: true,
