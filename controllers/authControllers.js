@@ -9,6 +9,7 @@ class AuthControllers {
     getUserPhoneNumber = async(req, res) => {
         try {
             const { phoneNumber } = req.body;
+            console.log(`도착한 폰 번호: ${phoneNumber} `);
             await this.authServices.sendAuthorityCheckMessage( phoneNumber );
             return res.send({ 
                 msg: '인증 메시지를 전송했습니다' 
@@ -21,6 +22,8 @@ class AuthControllers {
     compareAuthInputWithOurs = async (req, res) => {
         try {
             const { phoneNumber, authCode } = req.body;
+            console.log(`도착한 폰 번호: ${phoneNumber} `);
+            console.log(`도착한 인증번호: ${authCode} `);
             if ( !phoneNumber || !authCode ) {
                 return res.status(400).send({ 
                     error: '필수 입력 정보가 비어있습니다.'
