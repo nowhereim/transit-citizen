@@ -6,27 +6,32 @@ class AuthControllers {
         this.authServices = new AuthServices;
     }
 
-    // 전화 번호 받아서 인증 번호 발송하는 메서드
     getUserPhoneNumber = async(req, res) => {
         try {
-            const { phone } = req.body;
-            await this.authServices.sendAuthorityCheckMessage(phone);
-            res.send('인증 메시지를 전송했습니다');
+            const { phoneNumber } = req.body;
+            await this.authServices.sendAuthorityCheckMessage( phoneNumber );
+            return res.send({ 
+                msg: '인증 메시지를 전송했습니다' 
+            });
         } catch (error) {
             console.log(error);
         }
     }
 
-    // 인증 번호 받아서 디비에 있는 값이랑 비교하는 메서드
-    compareAuthInputWithOurs = async(req, res) => {
+    compareAuthInputWithOurs = async (req, res) => {
         try {
-            const { phone, auth } = req.body;
-            const test = await this.authServices.checkAuthNumber( phone, auth );
-            if(test === -1) {
-                res.status(400).send('없음');
+            const { phoneNumber, authCode } = req.body;
+            if ( !phoneNumber || !authCode ) {
+                return res.status(400).send({ 
+                    error: '필수 입력 정보가 비어있습니다.'
+                });
             }
-            res.status(400).send('성공');
-        } catch (error) {
+            const test = await this.authServices.checkAuthNumber( phoneNumber, authCode );
+            if ( test === null ) {
+                return res.status(400).send({ msg: '인증변호가 만료되었습니다'});
+            }
+            return res.status(200).send({ msg: '성공' });
+        } catch(error) {
             console.log(error);
         }
     }
