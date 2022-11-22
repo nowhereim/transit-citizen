@@ -24,14 +24,22 @@ class AuthServices {
 
                 this.sensServices.send_message( phoneNumber, message );
                 
-
                 await this.authRepositories.pushPhoneAuthData({
                     phoneNumber, 
                     authCode: authNumber
                 });
             }
         } catch (error) {
-            throw error;
+            throw new Error('유저정보없음')
+        }
+    }
+
+    checkAuthNumber = async ( phoneNumber, authCode ) => {
+        try {
+            const data = await this.authRepositories.findUserData({ phoneNumber, authCode });
+            return data;
+        } catch (error) {
+            console.log(error);
         }
     }
 }

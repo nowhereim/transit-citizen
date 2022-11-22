@@ -8,7 +8,7 @@ this.authControllers = new AuthControllers();
 router.post('/phone', this.authControllers.getUserPhoneNumber);
 
 // 인증 번호 비교
-// router.post('/compare', this.authControllers.compareAuthInputWithOurs);
+router.post('/compare', this.authControllers.compareAuthInputWithOurs);
 
 
 module.exports = router;
