@@ -34,7 +34,7 @@ module.exports = async (req, res, next) => {  // async 새로 넣었음.
     if (authResult.message === "jwt expired") {  
     const refresh = await Token.findOne({ snsId: decoded.snsId });
     console.log(refresh);
-    const refreshResult = verify(refresh.refreshToken) // 최초에 회원가입(+로그인)에 성공했다면 refresh.refreshToken은 무조건 존재.
+    const refreshResult = verify(refresh.refreshToken) // 최초에 회원가입(+로그인)에 성공했다면 refresh.refreshToken은 무조건 존재. (오류로 생성이 안됐다면?)
     // refreshToken이 삭제된 상태라면 여기서 에러 발생    
     console.log(refreshResult);
         
