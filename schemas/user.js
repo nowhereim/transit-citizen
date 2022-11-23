@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 const { Schema } = mongoose;
-const moment = require("moment");
-require("moment-timezone");
-const now = moment().format("YYYY-MM-DD HH:mm:ss");
+// const moment = require("moment");
+// require("moment-timezone");
+// const now = moment().format("YYYY-MM-DD HH:mm:ss");
 
 const userSchema = new Schema({
     snsId: {
@@ -34,15 +34,25 @@ const userSchema = new Schema({
     status: {
         type: String
     },
+    // createdAt: {
+    //     type: String,
+    //     defualt: now,
+    //     required: true
+    // },
+    // updatedAt: {
+    //     type: String,
+    //     defualt: now,
+    //     required: true
+    // },
     createdAt: {
-        type: String,
-        defualt: now,
-        required: true
+        type: Date,
+        required: true,
+        default: Date.now
     },
     updatedAt: {
-        type: String,
-        defualt: now,
-        required: true
+        type: Date,
+        required: true,
+        default: Date.now
     }
 });
 
