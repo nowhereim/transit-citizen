@@ -17,8 +17,8 @@ redisClient.on("error", (err) => {
 });
 redisClient.connect().then();
 const redisCli = redisClient.v4;
-// redisClient.auth(process.env.redisAuth);
-// redisCli.auth(process.env.redisAuth);
+redisClient.auth(process.env.redisAuth);
+redisCli.auth(process.env.redisAuth);
 
 const io = require("socket.io")(server, {
   cors: {
@@ -32,6 +32,7 @@ const User = require("./schemas/user");
 
 io.on("connection", (socket) => {
   socket.on("nickname", (nickname) => {
+    console.log(nickname);
     socket["nickname"] = nickname;
   });
 
