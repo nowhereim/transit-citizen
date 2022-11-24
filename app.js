@@ -1,18 +1,15 @@
 const express = require("express");
-const Http = require('http');
-const routes = require('./routes');
+const Http = require("http");
+const routes = require("./routes");
 const app = express();
 const cors = require("cors");
 const server = require("http").createServer(app);
 const upload = require("./upload");
 const deleteim = require("./delete");
 const connect = require("./schemas");
-const cloudinaryConfig = require('./config/cloudconfig');
+const cloudinaryConfig = require("./config/cloudconfig");
 require("dotenv").config();
 connect();
-
-const http = Http.createServer(app);
-const port = 3000;
 
 // app.use(cors());
 
@@ -24,11 +21,11 @@ app.set("view engine", "ejs");
 
 app.use(function (req, res, next) {
   res.set({
-      'Access-Control-Allow-Credentials': true,
-      'Access-Control-Allow-Origin': req.headers.origin,
-      'Access-Control-Allow-Methods': '*',
-      'Access-Control-Allow-Headers':
-          'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, authorization, refreshToken, cache-control',
+    "Access-Control-Allow-Credentials": true,
+    "Access-Control-Allow-Origin": req.headers.origin,
+    "Access-Control-Allow-Methods": "*",
+    "Access-Control-Allow-Headers":
+      "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, authorization, refreshToken, cache-control",
   });
   next();
 });
@@ -37,11 +34,11 @@ app.use(cloudinaryConfig);
 
 app.use(
   cors({
-      origin: '*',
+    origin: "*",
   })
 );
 
-app.use('/', routes);
+app.use("/", routes);
 
 app.get("/", (req, res) => {
   res.render("socket"); // socket.ejs
@@ -58,6 +55,5 @@ app.post("/deleteFile", (req, res) => {
     res.status(201).send("deleted");
   });
 });
-
 
 module.exports = server;
