@@ -1,3 +1,10 @@
 node_modules
 .env
 package-lock.json
+views
+*.ejs
+socket.ejs
+.gitignore
+upload.js
+delete.js
+dbpassFunction

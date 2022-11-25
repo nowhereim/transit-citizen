@@ -3,7 +3,8 @@ const crypto = require("crypto");
 const connect = require("./schemas");
 connect();
 require("dotenv").config();
-const RedisMo = require("./functionstuff");
+const RedisMo = require("./sdFucntion");
+const Preliminaryfunction = require("./dbpassFunction");
 const redis = require("redis");
 const redisClient = redis.createClient({
   legacyMode: true,
@@ -17,8 +18,8 @@ redisClient.on("error", (err) => {
 });
 redisClient.connect().then();
 const redisCli = redisClient.v4;
-redisClient.auth(process.env.redisAuth);
-redisCli.auth(process.env.redisAuth);
+// redisClient.auth(process.env.redisAuth);
+// redisCli.auth(process.env.redisAuth);
 
 const io = require("socket.io")(server, {
   cors: {
@@ -40,16 +41,8 @@ io.on("connection", (socket) => {
     socket.leave(roomName);
   });
 
-  socket.on("randomjoin", async (msg) => {
-    User.updateOne(
-      { nickname: msg.nickname },
-      { $unset: { location: "" } },
-      (err) => {
-        if (err) {
-          console.log(err);
-        }
-      }
-    );
+  socket.on("randomjoin", (msg) => {
+    Preliminaryfunction.unset({ name: msg.nickname });
     socket.on("end", (msg) => {
       try {
         clearInterval(interval);
@@ -68,36 +61,20 @@ io.on("connection", (socket) => {
     socket.emit("maching", {
       msg: "매칭 중 입니다. 참여인원이 2인 이상이 되면 매칭이 시작됩니다.",
     });
+    Preliminaryfunction.set({ name: msg.nickname, location: socketjoinNumber });
 
-    //redis ttl 설정
-    User.updateOne(
-      { nickname: msg.nickname },
-      { $set: { location: socketjoinNumber } },
-      (err, data) => {
-        if (err) {
-          console.log(err);
-        }
-      }
-    );
-    RedisMo.setArr(
-      {
-        key: "Arrtest",
-        value: {
-          gender: gender,
-          dropstation: dropstation,
-          nickName: msg.nickname,
-          trainSection: train,
-          socketjoinNumber: socketjoinNumber,
-          roomkey: "",
-          fair: "",
-        },
+    RedisMo.setArr({
+      key: "Arrtest",
+      value: {
+        gender: gender,
+        dropstation: dropstation,
+        nickName: msg.nickname,
+        trainSection: train,
+        socketjoinNumber: socketjoinNumber,
+        roomkey: "",
+        fair: "",
       },
-      (err) => {
-        if (err) {
-          console.log(err);
-        }
-      }
-    );
+    });
 
     let count = 0;
     const interval = setInterval(() => {
@@ -117,43 +94,14 @@ io.on("connection", (socket) => {
             ranNum + crypto.randomBytes(2).toString("hex") + socketjoinNumber;
           if (result[ranNum].nickName !== msg.nickname) {
             const name = result[ranNum].nickName;
-            User.updateOne(
-              { nickname: name },
-              { $unset: { location: "" } },
-              (err, data) => {
-                if (data.modifiedCount === 0) {
-                  clearInterval(interval);
-                  return interval;
-                } else {
-                  RedisMo.delarrTwo({ own: msg.nickname, other: name });
-                  socket.join(roomkey);
-                  io.emit(msg.nickname, {
-                    roomkey: roomkey,
-                    ownself: msg.nickname,
-                    fair: name,
-                    train: train,
-                    debug: " mached part 1",
-                  });
-                  io.emit(name, {
-                    msg: "매칭이 완료되었습니다. 채팅방으로 이동합니다.",
-                    roomkey: roomkey,
-                    fair: msg.nickname,
-                    train: train,
-                    debug: "1번 에밋 부분",
-                  });
-                  User.updateOne(
-                    { nickname: msg.nickname },
-                    { $unset: { location: "" } },
-                    (err) => {
-                      if (err) {
-                        console.log(err);
-                      }
-                    }
-                  );
-                  clearInterval(interval);
-                }
-              }
-            );
+            repeatFunction({
+              nickname: msg.nickname,
+              name: name,
+              roomkey: roomkey,
+              train: train,
+              debug: "debug line 158",
+            });
+            clearInterval(interval);
           }
           if (
             result[ranNum].nickName === msg.nickname &&
@@ -162,45 +110,15 @@ io.on("connection", (socket) => {
             ranNum = ranNum + 1;
             const ranNum =
               userone + crypto.randomBytes(2).toString("hex") + usertwo;
-            User.updateOne(
-              { nickname: result[ranNum].nickName },
-              { $unset: { location: "" } },
-              (err, data) => {
-                if (data.modifiedCount === 0) {
-                  clearInterval(interval);
-                  return interval;
-                } else {
-                  RedisMo.delarrTwo({
-                    own: msg.nickname,
-                    other: result[ranNum].nickName,
-                  });
-                  socket.join(roomkey);
-                  io.emit(msg.nickname, {
-                    roomkey: roomkey,
-                    fair: result[ranNum].nickName,
-                    train: train,
-                    debug: " mached part 2",
-                  });
-                  io.emit(result[ranNum].nickName, {
-                    msg: "매칭이 완료되었습니다. 채팅방으로 이동합니다.",
-                    roomkey: roomkey,
-                    fair: msg.nickname,
-                    train: train,
-                    debug: " mached part 2",
-                  });
-                  User.updateOne(
-                    { nickname: msg.nickname },
-                    { $unset: { location: "" } },
-                    (err) => {
-                      if (err) {
-                        console.log(err);
-                      }
-                    }
-                  );
-                  clearInterval(interval);
-                }
-              }
-            );
+            const name = result[ranNum].nickName;
+            repeatFunction({
+              nickname: msg.nickname,
+              name: name,
+              roomkey: roomkey,
+              train: train,
+              debug: "debug line 175",
+            });
+            clearInterval(interval);
           }
           if (
             result[ranNum].nickName === msg.nickname &&
@@ -208,92 +126,34 @@ io.on("connection", (socket) => {
             ranNum !== 0
           ) {
             const name = result[ranNum - 1].nickName;
-            User.updateOne(
-              { nickname: name },
-              { $unset: { location: "" } },
-              (err, data) => {
-                if (data.modifiedCount === 0) {
-                  clearInterval(interval);
-                  return interval;
-                } else {
-                  RedisMo.delarrTwo({ own: msg.nickname, other: name });
-                  socket.join(roomkey);
-                  io.emit(msg.nickname, {
-                    roomkey: roomkey,
-                    ownself: msg.nickname,
-                    fair: name,
-                    train: train,
-                    debug: " mached part 3",
-                  });
-                  io.emit(name, {
-                    msg: "매칭이 완료되었습니다. 채팅방으로 이동합니다.",
-                    roomkey: roomkey,
-                    fair: msg.nickname,
-                    train: train,
-                    debug: " mached part 3",
-                  });
-                  User.updateOne(
-                    { nickname: msg.nickname },
-                    { $unset: { location: "" } },
-                    (err) => {
-                      if (err) {
-                        console.log(err);
-                      }
-                    }
-                  );
-                  clearInterval(interval);
-                }
-              }
-            );
+            repeatFunction({
+              nickname: msg.nickname,
+              name: name,
+              roomkey: roomkey,
+              train: train,
+              debug: "debug line 190",
+            });
+            clearInterval(interval);
           } else if (
             result[ranNum].nickName === msg.nickname &&
             result[ranNum] !== 0 &&
             ranNum === 0
           ) {
             const name = result[ranNum + 1].nickName;
-            User.updateOne(
-              { nickname: result[ranNum].nickName },
-              { $unset: { location: "" } },
-              (err, data) => {
-                if (data.modifiedCount === 0) {
-                  clearInterval(interval);
-                  return interval;
-                } else {
-                  RedisMo.delarrTwo({ own: msg.nickname, other: name });
-                  socket.join(roomkey);
-                  io.emit(msg.nickname, {
-                    roomkey: roomkey,
-                    ownself: msg.nickname,
-                    fair: name,
-                    train: train,
-                    debug: " mached part 4",
-                  });
-                  io.emit(name, {
-                    msg: "매칭이 완료되었습니다. 채팅방으로 이동합니다.",
-                    roomkey: roomkey,
-                    fair: msg.nickname,
-                    train: train,
-                    debug: " mached part 4",
-                  });
-                  User.updateOne(
-                    { nickname: msg.nickname },
-                    { $unset: { location: "" } },
-                    (err) => {
-                      if (err) {
-                        console.log(err);
-                      }
-                    }
-                  );
-                  clearInterval(interval);
-                }
-              }
-            );
+            repeatFunction({
+              nickname: msg.nickname,
+              name: name,
+              roomkey: roomkey,
+              train: train,
+              debug: "debug line 203",
+            });
+            clearInterval(interval);
           }
           clearInterval(interval);
         }
       });
       count = count + 1;
-      if (count === 5) {
+      if (count === 10) {
         io.emit(msg.nickname, {
           fail: "매칭 가능한 상대방이 없습니다. 다시 시도해주세요.",
         });
@@ -301,6 +161,34 @@ io.on("connection", (socket) => {
         RedisMo.delarr(msg.nickname);
       }
     }, 5000);
+    const repeatFunction = (value) => {
+      User.updateOne(
+        { nickname: value.name },
+        { $unset: { location: "" } },
+        (err, data) => {
+          if (data.modifiedCount === 0) {
+            return interval;
+          } else {
+            RedisMo.delarrTwo({ own: value.nickname, other: value.name });
+            socket.join(value.roomkey);
+            io.emit(value.nickname, {
+              roomkey: value.roomkey,
+              ownself: value.nickname,
+              fair: value.name,
+              train: value.train,
+              debug: value.debug,
+            });
+            io.emit(value.name, {
+              msg: "매칭이 완료되었습니다. 채팅방으로 이동합니다.",
+              roomkey: value.roomkey,
+              fair: value.nickname,
+              train: value.train,
+              debug: value.debug,
+            });
+          }
+        }
+      );
+    };
   });
 
   socket.on("persnalchat", (data) => {
@@ -311,15 +199,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("joinFair", (data) => {
-    User.updateOne(
-      { nickname: data.name },
-      { $unset: { location: "" } },
-      (err) => {
-        if (err) {
-          console.log(err);
-        }
-      }
-    );
+    Preliminaryfunction.unset({ name: data.name });
     socket.join(data.roomkey);
   });
 

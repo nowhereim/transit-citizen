@@ -12,8 +12,8 @@ redisClient.on("error", (err) => {
 });
 redisClient.connect().then();
 const redisCli = redisClient.v4;
-redisClient.auth(process.env.redisAuth);
-redisCli.auth(process.env.redisAuth);
+// redisClient.auth(process.env.redisAuth);
+// redisCli.auth(process.env.redisAuth);
 
 exports.delarr = async (value) => {
   try {
