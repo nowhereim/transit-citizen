@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const authMiddleware = require('../middlewares/auth_middleware');
-const representProfileUpload = require("../middlewares/imagesUploadMiddleware");
+const imagesUploadMiddleware = require("../middlewares/imagesUploadMiddleware");
+const { representProfileUpload } = imagesUploadMiddleware;
 const UserControllers = require('../controllers/userControllers');
 this.userControllers = new UserControllers();
 
