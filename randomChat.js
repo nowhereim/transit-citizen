@@ -171,25 +171,29 @@ io.on("connection", (socket) => {
           } else {
             RedisMo.delarrTwo({ own: value.nickname, other: value.name });
             socket.join(value.roomkey);
-            io.emit(value.nickname, {
-              roomkey: value.roomkey,
-              ownself: value.nickname,
-              fair: value.name,
-              train: value.train,
-              debug: value.debug,
-            });
-            io.emit(value.name, {
-              msg: "매칭이 완료되었습니다. 채팅방으로 이동합니다.",
-              roomkey: value.roomkey,
-              fair: value.nickname,
-              train: value.train,
-              debug: value.debug,
-            });
+            repeatEmit(value);
           }
         }
       );
     };
   });
+
+  const repeatEmit = (value) => {
+    io.emit(value.nickname, {
+      roomkey: value.roomkey,
+      ownself: value.nickname,
+      fair: value.name,
+      train: value.train,
+      debug: value.debug,
+    });
+    io.emit(value.name, {
+      msg: "매칭이 완료되었습니다. 채팅방으로 이동합니다.",
+      roomkey: value.roomkey,
+      fair: value.nickname,
+      train: value.train,
+      debug: value.debug,
+    });
+  };
 
   socket.on("persnalchat", (data) => {
     io.to(data.roomkey).emit("broadcast", {
