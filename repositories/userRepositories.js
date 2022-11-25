@@ -54,6 +54,20 @@ class userRepositories {
             console.log(error.message);
         }
     }
+
+    isSameUser_DB = async ( nickname ) => {
+        try {
+            if (nickname) {
+                const data = await User.findOne({ nickname });
+                return data;
+            } else {
+                throw error;
+            }
+        } catch (error) {
+            console.log(error.name);
+            console.log(error.message);
+        }
+    }
 }
 
 module.exports = userRepositories;
