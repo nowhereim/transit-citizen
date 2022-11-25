@@ -51,6 +51,18 @@ class userServices {
             console.log(error);
         }
     }
+
+    checkIsSameUser = async ( nickname ) => {
+        try { 
+            if (nickname) {
+                const data = await this.userRepositories.isSameUser_DB(nickname);
+                if ( data !== null ) return false;
+                return;
+            }
+        } catch (error) {
+            throw new Error('nickname이 정의되지 않았습니다');
+        }
+    }
 }
 
 module.exports = userServices;

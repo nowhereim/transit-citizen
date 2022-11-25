@@ -1,4 +1,5 @@
 const UserServices = require('../services/userServices');
+const phoneNumberCheck = /^(010)([0-9]{4})([0-9]{4})$/;
 
 class userControllers {
 
@@ -12,9 +13,24 @@ class userControllers {
             const representProfile = req.file.buffer;
             const { nickname, phoneNumber, gender } = req.body; 
 
-            if ( !snsId || !representProfile ||!nickname || !phoneNumber || !gender ) {
+            if ( !snsId || !nickname || !phoneNumber || !gender ) {
                 return res.status(400).send({ 
-                    msg: "필수 정보는 모두 입력해주세요"
+                    error: "필수 정보는 모두 입력해주세요"
+                });
+            }
+
+            if (phoneNumber.search(phoneNumberCheck) === -1 ) {
+                return res
+                    .status(400)
+                    .send({ error: '잘못된 형식입니다' });
+            }
+
+            const userNicknameCheck = await this
+                                            .userServices
+                                            .checkIsSameUser( nickname );
+            if ( userNicknameCheck === false ) {
+                return res.status(400).send({
+                    error: "중복된 유저입니다."
                 });
             }
 
@@ -35,7 +51,9 @@ class userControllers {
             });
 
         } catch (error) {
-            console.log(error);
+            res.status(400).send({ msg: "필수 정보는 모두 입력해주세요" });
+            console.log(error.name);
+            console.log(error.message);
         }
     }
 }
