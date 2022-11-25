@@ -2,7 +2,7 @@ const multer = require("multer");
 
 const storage = multer.memoryStorage();
 
-module.exports = multer({
+const imagesUpload = multer({
     storage,
     limits: {
         fileSize: 10 * 1024 * 1024
@@ -19,4 +19,7 @@ const representProfileUpload = multer({
     }
 }).single('representProfile');
 
-module.exports = representProfileUpload; 
+module.exports = { 
+    representProfileUpload, 
+    imagesUpload 
+}
