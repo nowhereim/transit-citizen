@@ -33,7 +33,6 @@ const allowedExtensions = [
   ".cmd",
   ".MP4",
 ];
-
 const upload = multer({
   storage: multerS3({
     s3: s3,
