@@ -1,7 +1,6 @@
 const Joi = require('joi');
 
 exports.user = Joi.object({
-    snsId: Joi.required(),
     nickname: Joi.string()
                     .min(1)
                     .max(10)
