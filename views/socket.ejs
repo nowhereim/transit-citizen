@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.socket.io/4.5.3/socket.io.min.js" integrity="sha384-WPFUvHkB1aHA5TDSZi6xtDgkF0wXJcIIxXhC6h8OT8EH3fC5PWro5pWJ1THjcfEi" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+     const socket = io("localhost:3000");
+    // const socket = io("https://mijutaehwan.shop/"); // io()는 socket.io-client의 기본 함수로, 서버와 연결하는 소켓을 생성한다.
+    $(document).ready(function(){
+        localStorage.removeItem("name")
+        //prompt 입력값 두개
+        var input = prompt("이름을 입력해주세요")
+        var inputtrin = prompt("열차 번호 4자리를 입력해주세요.")
+        localStorage.setItem("name",input)
+        socket.emit('nickname',input)
+        $('#nick').val(input)
+        $('#trainNUMBER').val(inputtrin)
+        
+
+    socket.on('maching',(data) => {
+       alert(data.msg);
+        console.log("매칭입니다") 
+  })
+
+  socket.on('imageUP',(data) => {
+       alert(data);
+        console.log("imageUP") 
+  })
+
+  let count = 0;
+
+  socket.on(localStorage.getItem("name"),(data) => {
+        socket.emit('end',"")
+    socket.emit('joinFair',{roomkey:data.roomkey,name:localStorage.getItem("name")}) 
+    $("#chatFair").empty();
+    $('#chatFair').append(`대화상대 : ${data.fair}`)
+    $("#roomkey").empty();
+    $('#roomkey').append(`room : ${data.roomkey}`)
+    // $("#trainPi").empty();
+    // $('#trainPi').append(`칸 번호 : ${data.train}`)
+    if(data.msg !== undefined){
+            alert(`${data.fair} 님과 ${data.msg}`)
+        }else if(data.fail !== undefined){
+            alert(data.fail)
+        }else{
+            alert(`${data.ownself}님 !! ${data.fair}님과 매칭 되었어요!!`);
+    
+        }
+  })
+});
+    
+    // const nameSet = () => {
+    //     localStorage.setItem("name", $('#nick').val());
+    //     console.log(localStorage.getItem("name"));
+    //     socket.emit("nickname", localStorage.getItem("name"))
+    //     alert(`닉네임이 클라이언트에 다음과같이 설정되었습니다. : ${$('#nick').val()}  `);
+    // };
+
+    socket.on('broadcast', (data) => { // 서버에서 보낸 데이터를 받는다.
+        console.log(data)        
+        $('#chatting').append(`<li> ${data.name} : ${data.msg}`);
+            let objDiv = document.getElementById("chattingMom"); // getElementById는 id를 이용하여 DOM 객체를 가져온다.
+            objDiv.scrollTop = objDiv.scrollHeight; 
+        });
+    
+    const jointrain = () => {
+        const trainNum = $('#trainNUMBER').val();
+    const trainline = trainNum.toString().slice(0, 1);
+    const train = trainNum.toString().slice(1, 2);
+    const trainNumthird = trainNum.toString().slice(2, 4);
+    const socketjoinNumber = trainline + trainNumthird;
+        const nickname = $('#nick').val();
+        console.log($('#trainNUMBER').val())
+        alert(`${nickname}님 ${trainline}호선의 ${trainNumthird}번 열차의 ${train}번 칸으로 입장하였습니다.`);
+        socket.emit('jointrain', {train:$('#trainNUMBER').val(),nickname:nickname}); // joinRoom 이벤트를 발생시키고, room1이라는 데이터를 전달한다.
+    }
+
+    
+    const enterkey = () => {
+        //엔터 키를 눌렀을때 chatpersnal() 실행
+        if(window.event.keyCode == 13)
+            {chatpersnal()}
+
+    }
+
+    const chat = () => {
+
+        socket.emit('persnalchat',{msg: $('#des').val(), roomkey: $('#trainNUMBER').val()});
+    }
+
+    const testtest = () => {
+        socket.emit('end',"")
+        socket.emit('randomjoin', {nickname:$('#nick').val(), train:$('#trainNUMBER').val()});
+    }
+
+    chatpersnal = () => {
+        //persnalchat input 창 초기화
+        socket.emit('persnalchat', {nickname:localStorage.getItem("name"),msg: $('#persnalchat').val(), roomkey: $('#roomkey').val().split(" ")[2]});
+        $('#persnalchat').val('');
+    }
+
+const outmatch = () => {
+    socket.emit('deltrain', {name:localStorage.getItem("name")});
+    alert("매칭 대기열에서 나갔습니다.")
+}
+
+</script>
+<body>
+    <li><input id='nick' readonly> 닉네임 </input></li>
+    <li><input id='trainNUMBER' readonly> 열차번호 </input></li>
+     <button onclick="testtest()"> 매칭 시작 </button>       
+     <!-- <button onclick="outmatch()">매칭 나가기</button> -->
+
+    <div id="corn"></div>
+     <!-- <button onclick="room1()">룸1</button>
+    <button onclick="room1send()">룸1에다가 메세지 보내기</button> -->
+    <h1> 사용순서 : 
+        <h3><li>닉네임과 원하는 열차번호 4자리 를 입력후 
+        <li>즉시매칭 순서로 실행합니다. 
+            <li>매칭이 완료되면 대화상대에 상대방 닉네임이 표시되고
+                <li>상대방과의 대화가 쌉가능 해집니다.
+                   </h3>
+        </h1>
+            <textarea id="chatFair" cols="20" rows="1" readonly></textarea> <textarea id="roomkey" cols="25" rows="1" readonly></textarea>
+            <!-- <textarea id="trainPi" cols="20" rows="1" readonly></textarea> -->
+            <div style="width:400px; height:400px; border:1px solid #000; overflow:auto;" id="chattingMom">
+                <div id="chatting"></div>
+            </div>
+            <br>
+            <li><input type="text" id='persnalchat' onkeyup="enterkey()"></input> 메시지 입력 </li>
+            <br>
+            <li><button onclick="chatpersnal()">채팅 전송</button>
+    <div id="QQ"></div>
+            </body>
+</html>
+
