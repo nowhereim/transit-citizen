@@ -13,7 +13,7 @@
     <title>Document</title>
 </head>
 <script>
-     const socket = io("localhost:3000");
+     const socket = io("https://mijutaehwan.shop/");
     // const socket = io("https://mijutaehwan.shop/"); // io()는 socket.io-client의 기본 함수로, 서버와 연결하는 소켓을 생성한다.
     $(document).ready(function(){
         localStorage.removeItem("name")
@@ -57,6 +57,29 @@
         }
   })
 });
+
+// $.ajax({
+//     url: "https://mijutaehwan.shop:3000/api/train",
+//     type: "GET",
+//     dataType: "json",
+//     success: function (data) {
+//         $.ajax({
+//             url: "https://mijutaehwan.shop:3000/api/train",
+//             type: "POST",
+//             dataType: "json",
+//             data: {
+//                 train: $('#trainNUMBER').val(),
+//                 name: $('#nick').val(),
+//                 roomkey: $('#roomkey').val(),
+//                 fair: $('#chatFair').val(),
+//             },
+//             success: function (data) {
+//                 console.log(data)
+//             },
+//         });
+//     }
+// });
+
     
     // const nameSet = () => {
     //     localStorage.setItem("name", $('#nick').val());

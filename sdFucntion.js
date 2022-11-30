@@ -81,3 +81,11 @@ exports.delarrTwo = async (value) => {
     console.log(e + "삭제 할 값이 없음");
   }
 };
+
+exports.setUser = async (value) => {
+  redisClient.set(value.nickName, JSON.stringify(value), (err, res) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+};

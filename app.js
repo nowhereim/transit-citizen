@@ -8,6 +8,7 @@ const upload = require("./upload");
 const deleteim = require("./delete");
 const connect = require("./schemas");
 const cloudinaryConfig = require("./config/cloudconfig");
+const authMiddleware = require("./middlewares/auth_middleware.js");
 require("dotenv").config();
 connect();
 
@@ -44,6 +45,10 @@ app.get("/", (req, res) => {
   res.render("socket"); // socket.ejs
 });
 
+app.get("/authbaby", authMiddleware, (req, res) => {
+  res.send("authbaby success");
+});
+
 app.post("/uploadFile", (req, res) => {
   upload.single("image")(req, res, (err) => {
     res.status(201).send("uploaded");
@@ -54,10 +59,6 @@ app.post("/deleteFile", (req, res) => {
   deleteim(req, res, () => {
     res.status(201).send("deleted");
   });
-});
-
-app.use((error, req, res, next) => {
-  res.status(500).json({ message: error.message });
 });
 
 module.exports = server;

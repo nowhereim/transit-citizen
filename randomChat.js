@@ -134,7 +134,7 @@ io.on("connection", (socket) => {
           fail: "매칭 가능한 상대방이 없습니다. 다시 시도해주세요.",
         });
         clearInterval(interval);
-        RedisMo.delarr(msg.nickname);
+        Maching.deleteMany({ nickname: msg.nickname }, (err, data) => {});
       }
     }, 5000);
     const repeatFunction = (value) => {
@@ -151,6 +151,22 @@ io.on("connection", (socket) => {
   });
 
   const repeatEmit = (value) => {
+    // redis.get(value.nickname, (err, result) => {
+    //   if (err) {
+    //     console.log(err + "redis get error");
+    //   } else {
+    //     io.emit(value.nickname, {userinfo:result,
+    //     });
+    //   }
+    // });
+    // redis.get(value.name, (err, result) => {
+    //   if (err) {
+    //     console.log(err + "redis get error");
+    //   } else {
+    //     io.emit(value.name, {userinfo:result,
+    //     });
+    //   }
+    // });
     io.emit(value.nickname, {
       roomkey: value.roomkey,
       ownself: value.nickname,
