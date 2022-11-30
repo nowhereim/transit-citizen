@@ -1,17 +1,14 @@
-
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const KakaoController = require('../controllers/kakao.controller');
-const kakaoController = new KakaoController()
+const KakaoController = require("../controllers/kakao.controller");
+const kakaoController = new KakaoController();
 
-router.get('/kakao/callback', kakaoController.getKakaoToken);
+router.get("/kakao/callback", kakaoController.getKakaoToken);
 
+router.get("/google/callback", kakaoController.getGoogleToken);
 
-router.get('/google/callback', kakaoController.getGoogleToken);
-
-
-router.get('/naver/callback', kakaoController.getNaverToken);
+router.get("/naver/callback", kakaoController.getNaverToken);
 
 // 프론트에게서 인가코드를 받는다 post_1
 // 서버에서 인가코드를 가지고 카톡에게서 토큰을 받는다.

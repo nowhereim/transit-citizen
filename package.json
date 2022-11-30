@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon ./randomChat/server.js"
   },
   "keywords": [],
   "author": "",
