@@ -45,10 +45,6 @@ app.get("/", (req, res) => {
   res.render("socket"); // socket.ejs
 });
 
-app.get("/authbaby", authMiddleware, (req, res) => {
-  res.send("authbaby success");
-});
-
 app.post("/uploadFile", (req, res) => {
   upload.single("image")(req, res, (err) => {
     res.status(201).send("uploaded");
