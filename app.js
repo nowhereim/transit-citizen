@@ -48,7 +48,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/sex", (req, res) => {
-  res.send("hello SEX power");
+  res.send("hello SEX powera");
 });
 app.use("/", routes);
 
