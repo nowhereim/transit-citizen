@@ -18,7 +18,12 @@ jobs:
           host: ${{ secrets.PHPLATEST }}
           username: ${{ secrets.SSH_ID }}
           script: |
-            ${{ secrets.ASDQQWEZ }}
-            ${{ secrets.CNMFGHH }}
-            ${{ secrets.ASDHTGDFGH }}
-            ${{ secrets.NOMAL }}
+            cd last
+            sudo git pull origin main
+            sudo npm install
+            pm2 start ./randomChat/server.js --watch
+
+# ${{ secrets.ASDQQWEZ }}
+# ${{ secrets.CNMFGHH }}
+# ${{ secrets.ASDHTGDFGH }}
+# ${{ secrets.NOMAL }}
