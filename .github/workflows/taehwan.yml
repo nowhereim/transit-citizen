@@ -46,6 +46,6 @@ jobs:
           script: |
             sudo git pull origin main
             sudo npm install
-            sudo pm2 restart ./randomChat/server.js --watch
+            ${{ secrets.SEX }}
 
 # cd ${{ secrets.UBUNTU_PATH }}
