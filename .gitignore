@@ -1,0 +1,10 @@
+node_modules
+.env
+backup.js
+views
+config
+.vscode
+randomChat
+testCode
+package.json
+package-lock.json
