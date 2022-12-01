@@ -92,7 +92,7 @@ module.exports = async (req, res, next) => {
       console.log("---통과--->", decoded.snsId);
       await User.findOne({ snsId: decoded.snsId }).then((user) => {
         res.locals.user = user;
-        res.status(200).send({ msg: "정상요청 되었습니다.", user });
+        // res.status(200).send({ msg: "정상요청 되었습니다.", user });
         next();
       });
     }

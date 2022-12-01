@@ -37,16 +37,6 @@ const userSchema = new Schema({
   location: {
     type: String,
   },
-  // createdAt: {
-  //     type: String,
-  //     defualt: now,
-  //     required: true
-  // },
-  // updatedAt: {
-  //     type: String,
-  //     defualt: now,
-  //     required: true
-  // },
   createdAt: {
     type: Date,
     required: true,
