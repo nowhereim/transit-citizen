@@ -14,7 +14,7 @@ jobs:
       - name: Deploy
         uses: appleboy/ssh-action@v0.1.5
         with:
-          key: ${{ secrets.MDPECL }}
+          key: ${{ secrets.EC2_SECRET_KEY }}
           host: ${{ secrets.PHPLATEST }}
           username: ${{ secrets.SSH_ID }}
           script: |
