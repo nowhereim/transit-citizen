@@ -54,7 +54,7 @@ app.get("/authbaby", authMiddleware, (req, res) => {
 
 app.post("/uploadFile", (req, res) => {
   upload.single("image")(req, res, (err) => {
-    res.status(201).send("uploaded");
+    res.status(201).send(res.req.file.location);
   });
 });
 
