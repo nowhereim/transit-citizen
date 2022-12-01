@@ -6,5 +6,3 @@ config
 .vscode
 randomChat
 testCode
-package.json
-package-lock.json

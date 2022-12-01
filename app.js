@@ -44,7 +44,7 @@ app.use(
   })
 );
 app.get("/", (req, res) => {
-  res.render("socket"); // socket.ejs
+  res.render("socket");
 });
 app.use("/", routes);
 
