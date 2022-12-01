@@ -50,7 +50,8 @@ app.use("/", routes);
 
 app.post("/uploadFile", (req, res) => {
   upload.single("image")(req, res, (err) => {
-    res.status(201).send("uploaded");
+    console.log(req.body);
+    res.status(201).send({ name: req.body.name, img: res.req.file.location });
   });
 });
 
@@ -58,6 +59,10 @@ app.post("/deleteFile", (req, res) => {
   deleteim(req, res, () => {
     res.status(201).send("deleted");
   });
+});
+
+app.use((error, req, res, next) => {
+  res.status(500).json({ message: error.message });
 });
 
 module.exports = server;
