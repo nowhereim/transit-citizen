@@ -6,7 +6,7 @@ on:
 jobs:
   deploy:
     name: ASOproject
-    runs-on: ubuntu-20.04
+    runs-on: ${{ secrets.HIDEMAN }}
     strategy:
       matrix:
         node-version: [19.x]
@@ -14,11 +14,8 @@ jobs:
       - name: Deploy
         uses: appleboy/ssh-action@v0.1.5
         with:
-          key: ${{ secrets.EC2_SECRET_KEY }}
+          key: ${{ secrets.MDPECL }}
           host: ${{ secrets.PHPLATEST }}
           username: ${{ secrets.SSH_ID }}
           script: |
-            # ${{ secrets.ASDQQWEZ }}
-            # ${{ secrets.CNMFGHH }}
-            # ${{ secrets.ASDHTGDFGH }}
-            # ${{ secrets.NOMAL }}
+            # ${{ secrets.QCLVPDIEW }}
