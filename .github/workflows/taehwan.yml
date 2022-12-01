@@ -14,16 +14,11 @@ jobs:
       - name: Deploy
         uses: appleboy/ssh-action@v0.1.5
         with:
-          key: ${{ secrets.MDPECL }}
+          key: ${{ secrets.EC2_SECRET_KEY }}
           host: ${{ secrets.PHPLATEST }}
           username: ${{ secrets.SSH_ID }}
           script: |
-            cd last
-            sudo git pull origin main
-            sudo npm install
-            pm2 start ./randomChat/server.js --watch
-
-# ${{ secrets.ASDQQWEZ }}
-# ${{ secrets.CNMFGHH }}
-# ${{ secrets.ASDHTGDFGH }}
-# ${{ secrets.NOMAL }}
+            # ${{ secrets.ASDQQWEZ }}
+            # ${{ secrets.CNMFGHH }}
+            # ${{ secrets.ASDHTGDFGH }}
+            # ${{ secrets.NOMAL }}
