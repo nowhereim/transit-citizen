@@ -6,7 +6,7 @@ on:
 jobs:
   deploy:
     name: ASOproject
-    runs-on: ${{ secrets.HIDEMAN }}
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         node-version: [19.x]
