@@ -10,68 +10,77 @@ const KakaoRepository = require("../repositories/kakao.repository");
 class KakaoController {
   kakaoRepository = new KakaoRepository();
   getKakaoToken = async (req, res, next) => {
-    // try {
-    console.log("여기는 getKakaoToken , 인가 코드 : ", req.query.code);
-    const kakaoToken = await this.kakaoRepository.getKakaoToken(req.query.code);
-    console.log("kakao에서 받아온 accessToken :::::::::::: ", kakaoToken);
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Content-Type", "text/html; charset=utf-8");
-
-    const kakaoUserInfo = await this.kakaoRepository.getKakaoUserInfo(
-      kakaoToken
-    );
-    console.log(kakaoUserInfo);
-    const isUser = await this.kakaoRepository.findOneById(kakaoUserInfo.id);
-
-    const doneAdditionalInfo =
-      !isUser || !isUser.phoneNumber || !isUser.nickname || !isUser.gender
-        ? false
-        : true;
-
-    if (isUser) {
-      const token = jwt.sign({ snsId: isUser.snsId }, process.env.SECRET_KEY, {
-        expiresIn: "30s",
-      });
-      const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
-        expiresIn: "24h",
-      });
-
-      await Token.updateOne(
-        { snsId: isUser.snsId },
-        { $set: { accessToken: token, refreshToken: refreshToken } }
+    try {
+      const kakaoToken = await this.kakaoRepository.getKakaoToken(
+        req.query.code
       );
 
-      console.log(token);
-      return res.send({
-        jwtToken: token,
-        doneAdditionalInfo: doneAdditionalInfo,
-        message: "로그인하였습니다.",
-      });
-    } else {
-      const newUser = await this.kakaoRepository.createUser(kakaoUserInfo.id);
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Content-Type", "text/html; charset=utf-8");
 
-      const token = jwt.sign({ snsId: newUser.snsId }, process.env.SECRET_KEY, {
-        expiresIn: "30s",
-      });
-      const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
-        expiresIn: "12h",
-      });
-      await Token.create({
-        snsId: newUser.snsId,
-        accessToken: token,
-        refreshToken: refreshToken,
-      });
+      const kakaoUserInfo = await this.kakaoRepository.getKakaoUserInfo(
+        kakaoToken
+      );
 
-      console.log(token);
-      return res.send({
-        jwtToken: token,
-        doneAdditionalInfo: doneAdditionalInfo,
-        message: "로그인하였습니다.",
-      });
+      const isUser = await this.kakaoRepository.findOneById(kakaoUserInfo.id);
+
+      const doneAdditionalInfo =
+        !isUser || !isUser.phoneNumber || !isUser.nickname || !isUser.gender
+          ? false
+          : true;
+
+      if (isUser) {
+        const token = jwt.sign(
+          { snsId: isUser.snsId },
+          process.env.SECRET_KEY,
+          { expiresIn: "24h" }
+        );
+        const refresh = await Token.findOne({ snsId: isUser.snsId });
+
+        if (!refresh) {
+          const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
+            expiresIn: "240h",
+          });
+          await Token.create({
+            snsId: isUser.snsId,
+            refreshToken: refreshToken,
+          });
+        }
+
+        return res.send({
+          jwtToken: token,
+          doneAdditionalInfo: doneAdditionalInfo,
+          message: "로그인하였습니다.",
+        });
+      } else {
+        const newOne = await this.kakaoRepository.createUser(kakaoUserInfo.id);
+
+        const newUser = await this.kakaoRepository.findOneById(
+          kakaoUserInfo.id
+        );
+
+        const token = jwt.sign(
+          { snsId: newUser.snsId },
+          process.env.SECRET_KEY,
+          { expiresIn: "24h" }
+        );
+        const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
+          expiresIn: "240h",
+        });
+        await Token.create({
+          snsId: newUser.snsId,
+          refreshToken: refreshToken,
+        });
+
+        return res.send({
+          jwtToken: token,
+          doneAdditionalInfo: doneAdditionalInfo,
+          message: "로그인하였습니다.",
+        });
+      }
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
-    // } catch (error) {
-    // res.status(400).json({ error: error.message });
-    // }
   };
 
   getGoogleToken = async (req, res, next) => {
@@ -215,10 +224,10 @@ class KakaoController {
         const token = jwt.sign(
           { snsId: newUser.snsId },
           process.env.SECRET_KEY,
-          { expiresIn: "30s" }
+          { expiresIn: "24h" }
         );
         const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
-          expiresIn: "24",
+          expiresIn: "240h",
         });
         await Token.create({
           snsId: newUser.snsId,
@@ -234,52 +243,6 @@ class KakaoController {
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
-  };
-
-  getKakaoUserInfo = async (req, res, next) => {
-    const { authorization } = req.headers;
-    const [authType, kakaoToken] = (authorization || "").split(" ");
-
-    const kakaoUserInfo = await this.kakaoRepository.getKakaoUserInfo(
-      kakaoToken
-    );
-
-    const isUserInfo = await this.exUserGetToken(kakaoUserInfo);
-
-    if (isUserInfo) {
-      return res.status(200).json(isUserInfo);
-    }
-
-    const newUserInfo = await this.createUserToken(kakaoUserInfo);
-
-    res.header("Authorization", `Bearer ${newUserInfo.accessToken}`);
-    return res.status(201).json(newUserInfo);
-  };
-
-  createUserToken = async (kakaoUserInfo) => {
-    const allUser = await this.kakaoRepository.findAllUser();
-    const newUser = await this.kakaoRepository.createNewUser(
-      kakaoUserInfo,
-      allUser
-    );
-
-    const newUserToken = await jwtService.createAccessToken(newUser._id);
-
-    const playRecord = await this.kakaoRepository.getPlayRecord(
-      newUser,
-      newUserToken
-    );
-
-    return playRecord;
-  };
-
-  exUserGetToken = async (kakaoUserInfo) => {
-    const isUser = await this.kakaoRepository.findOneById(kakaoUserInfo._id);
-
-    if (isUser) {
-      const token = jwt.sign({ userId: isUser.userId }, process.env.SECRET_KEY);
-      return token;
-    } else return;
   };
 }
 
