@@ -45,6 +45,10 @@ app.get("/", (req, res) => {
   res.render("socket");
 });
 
+app.get("/bammboo", (req, res) => {
+  res.render("bammboo");
+});
+
 app.use("/", routes);
 
 app.post("/uploadFile", (req, res) => {
