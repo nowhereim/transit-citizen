@@ -6,7 +6,7 @@ on:
 jobs:
   deploy:
     name: ASOproject
-    runs-on: ${{ secrets.hideman }}
+    runs-on: ${{ secrets.HIDEMAN }}
     strategy:
       matrix:
         node-version: [19.x]
