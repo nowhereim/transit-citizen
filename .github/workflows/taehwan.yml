@@ -21,4 +21,4 @@ jobs:
             ${{ secrets.TWO_SEX }}
             sudo git pull origin main
             sudo npm install
-            ${{ secrets.SEX }}\
+            ${{ secrets.SEX }}
