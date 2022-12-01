@@ -1,0 +1,51 @@
+# name: ASOproject
+# on:
+#   pull_request:
+#     branches: ["main"]
+# jobs:
+#   deploy:
+#     name: ASOproject
+#     runs-on: ubuntu-20.04
+#     strategy:
+#       matrix:
+#         node-version: [19.x]
+#     steps:
+#       - name: Deploy
+#         uses: appleboy/ssh-action@v0.1.5
+#         with:
+#           key: ${{ secrets.CI_CD_KEY }}
+#           host: ${{ secrets.CI_CD_HOST }}
+#           username: ${{ secrets.CI_CD_USERNAME }}
+#           # port: ${{ secrets.CI_CD_PORT }}
+#           script: |
+#             cd ${{ secrets.CI_CD_PATH1 }}
+#             cd ${{ secrets.CI_CD_PATH2 }}
+#             sudo git pull origin master
+#             sudo npm install
+#             sudo pm2 restart ./randomChat/server.js --watch
+
+name: ASOproject
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+jobs:
+  deploy:
+    name: ASOproject
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [19.x]
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          key: ${{ secrets.EC2_SECRET_KEY }}
+          host: ${{ secrets.EC2_IP }}
+          username: ${{ secrets.SSH_ID }}
+          script: |
+            sudo git pull origin main
+            sudo npm install
+            sudo pm2 restart ./randomChat/server.js --watch
+
+# cd ${{ secrets.UBUNTU_PATH }}
