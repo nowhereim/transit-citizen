@@ -45,9 +45,6 @@ app.get("/", (req, res) => {
   res.render("socket");
 });
 
-app.get("/sex", (req, res) => {
-  res.send("hello 응 자동");
-});
 app.use("/", routes);
 
 app.post("/uploadFile", (req, res) => {
