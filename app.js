@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/bammboo", (req, res) => {
-  res.render("bammboo");
+  res.send("bammboo");
 });
 
 app.use("/", routes);
