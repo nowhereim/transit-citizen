@@ -1,5 +1,4 @@
 const express = require("express");
-const Http = require("http");
 const routes = require("./routes");
 const app = express();
 const cors = require("cors");
@@ -8,7 +7,6 @@ const upload = require("./randomChat/upload");
 const deleteim = require("./randomChat/delete");
 const connect = require("./schemas");
 const cloudinaryConfig = require("./config/cloudconfig");
-const authMiddleware = require("./middlewares/auth_middleware.js");
 const helmet = require("helmet");
 app.use(helmet.frameguard());
 app.use(helmet.hidePoweredBy({ setTo: "PHP 8.0.26" }));
@@ -48,7 +46,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/sex", (req, res) => {
-  res.send("hello last");
+  res.send("hello 우성");
 });
 app.use("/", routes);
 
