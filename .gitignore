@@ -2,6 +2,6 @@ node_modules
 .env
 backup.js
 views
-config
 randomChat
 testCode
+package-lock.json
