@@ -9,6 +9,7 @@ const KakaoRepository = require("../repositories/kakao.repository");
 
 class KakaoController {
   kakaoRepository = new KakaoRepository();
+
   getKakaoToken = async (req, res, next) => {
     try {
       const kakaoToken = await this.kakaoRepository.getKakaoToken(
@@ -26,7 +27,6 @@ class KakaoController {
 
       const doneAdditionalInfo =
         !isUser ||
-        !isUser.profileImage ||
         !isUser.phoneNumber ||
         !isUser.nickname ||
         !isUser.gender
@@ -34,117 +34,70 @@ class KakaoController {
           : true;
 
       if (isUser) {
-        const token = jwt.sign(
-          { snsId: isUser.snsId },
-          process.env.SECRET_KEY,
-          { expiresIn: "30s" }
-        );
-        const refresh = await Token.findOne({ snsId: isUser.snsId });
 
-        if (!refresh) {
-          const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
-            expiresIn: "240h",
-          });
-          await Token.create({
-            snsId: isUser.snsId,
-            refreshToken: refreshToken,
-          });
-        }
+        const token = jwt.sign({ snsId: isUser.snsId }, process.env.SECRET_KEY, { expiresIn: "24h" } );
+        const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {expiresIn: "240h", });
 
-        return res.send({
-          jwtToken: token,
-          doneAdditionalInfo: doneAdditionalInfo,
-          message: "로그인하였습니다.",
-        });
+        await Token.updateOne({ snsId: isUser.snsId }, { $set: { accessToken: token, refreshToken: refreshToken } });
+
+   
+        return res.send({ jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' });
+
       } else {
-        const newOne = await this.kakaoRepository.createUser(kakaoUserInfo.id);
+        const newUser = await this.kakaoRepository.createUser(kakaoUserInfo.id);
 
-        const newUser = await this.kakaoRepository.findOneById(
-          kakaoUserInfo.id
-        );
+        const token = jwt.sign({ snsId: newUser.snsId }, process.env.SECRET_KEY, { expiresIn: "24h" });
+        const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {expiresIn: "240h", });
+        await Token.create({ snsId: newUser.snsId, accessToken: token, refreshToken: refreshToken });
 
-        const token = jwt.sign(
-          { snsId: newUser.snsId },
-          process.env.SECRET_KEY,
-          { expiresIn: "24h" }
-        );
-        const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
-          expiresIn: "240h",
-        });
-        await Token.create({
-          snsId: newUser.snsId,
-          refreshToken: refreshToken,
-        });
-
-        return res.send({
-          jwtToken: token,
-          doneAdditionalInfo: doneAdditionalInfo,
-          message: "로그인하였습니다.",
-        });
+            
+        return res.send({ jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' });
       }
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   };
 
+  
   getGoogleToken = async (req, res, next) => {
     try {
-      const googleToken = await this.kakaoRepository.getGoogleToken(
-        req.query.code
-      );
+      const code = req.query.code;
+      
+      const googleToken = await this.kakaoRepository.getGoogleToken(code);
+      
 
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header("Content-Type", "text/html; charset=utf-8");
-
-      const googleUserInfo = await this.kakaoRepository.getGoogleUserInfo(
-        googleToken
-      );
+      const googleUserInfo = await this.kakaoRepository.getGoogleUserInfo(googleToken);
+      
 
       const isUser = await this.kakaoRepository.findOneById(googleUserInfo.id);
 
+      const doneAdditionalInfo =
+        !isUser ||
+        !isUser.phoneNumber ||
+        !isUser.nickname ||
+        !isUser.gender
+          ? false
+          : true;
+
       if (isUser) {
-        const token = jwt.sign(
-          { snsId: isUser.snsId },
-          process.env.SECRET_KEY,
-          { expiresIn: "24h" }
-        );
-        const refresh = await Token.findOne({ snsId: isUser.snsId });
+        const token = jwt.sign({ snsId: isUser.snsId }, process.env.SECRET_KEY, { expiresIn: "24h" } );
+        const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {expiresIn: "240h", });
 
-        if (!refresh) {
-          const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
-            expiresIn: "240h",
-          });
-          await Token.create({
-            snsId: isUser.snsId,
-            refreshToken: refreshToken,
-          });
-        }
+        await Token.updateOne({ snsId: isUser.snsId }, { $set: { accessToken: token, refreshToken: refreshToken } });
 
-        return res.send({ jwtToken: token, message: "로그인하였습니다." });
+        
+        return res.send({ jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' });
       } else {
-        const newOne = await this.kakaoRepository.createUserGoogle(
-          googleUserInfo.id
-        );
+        const newUser = await this.kakaoRepository.createUserGoogle(googleUserInfo.id);
 
-        const newUser = await this.kakaoRepository.findOneById(
-          googleUserInfo.id
-        );
+        const token = jwt.sign({ snsId: newUser.snsId }, process.env.SECRET_KEY, { expiresIn: "24h" });
+        const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {expiresIn: "240h", });
+        await Token.create({ snsId: newUser.snsId, accessToken: token, refreshToken: refreshToken });
 
-        const token = jwt.sign(
-          { snsId: newUser.snsId },
-          process.env.SECRET_KEY,
-          { expiresIn: "24h" }
-        );
-        const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
-          expiresIn: "240h",
-        });
-        await Token.create({
-          snsId: newUser.snsId,
-          refreshToken: refreshToken,
-        });
-
-        return res.send({ jwtToken: token, message: "로그인하였습니다." });
+               
+        return res.send({ jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' });
       }
+
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
@@ -185,115 +138,35 @@ class KakaoController {
 
       const doneAdditionalInfo =
         !isUser ||
-        !isUser.profileImage ||
         !isUser.phoneNumber ||
         !isUser.nickname ||
         !isUser.gender
           ? false
           : true;
 
-      if (isUser) {
-        // 기존 유저
-        const token = jwt.sign(
-          { snsId: isUser.snsId },
-          process.env.SECRET_KEY,
-          { expiresIn: "24h" }
-        );
-        const refresh = await Token.findOne({ snsId: isUser.snsId });
-
-        if (!refresh) {
-          const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
-            expiresIn: "240h",
-          });
-          await Token.create({
-            snsId: isUser.snsId,
-            refreshToken: refreshToken,
-          });
-        }
-        return res.send({
-          jwtToken: token,
-          doneAdditionalInfo: doneAdditionalInfo,
-          message: "로그인하였습니다.",
-        });
-      } else {
-        // 새로운 유저
-        const newOne = await this.kakaoRepository.createUserNaver(
-          naverUserInfo.id
-        );
-
-        const newUser = await this.kakaoRepository.findOneById(
-          naverUserInfo.id
-        );
-
-        const token = jwt.sign(
-          { snsId: newUser.snsId },
-          process.env.SECRET_KEY,
-          { expiresIn: "24h" }
-        );
-        const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
-          expiresIn: "240h",
-        });
-        await Token.create({
-          snsId: newUser.snsId,
-          refreshToken: refreshToken,
-        });
-
-        return res.send({
-          jwtToken: token,
-          doneAdditionalInfo: doneAdditionalInfo,
-          message: "로그인하였습니다.",
-        });
-      }
+          if (isUser) {
+            const token = jwt.sign({ snsId: isUser.snsId }, process.env.SECRET_KEY, { expiresIn: "30s" } );
+            const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {expiresIn: "240h", });
+    
+            await Token.updateOne({ snsId: isUser.snsId }, { $set: { accessToken: token, refreshToken: refreshToken } });
+    
+          
+            return res.send({ jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' });
+          } else {
+            const newUser = await this.kakaoRepository.createUserNaver(naverUserInfo.id);
+    
+            const token = jwt.sign({ snsId: newUser.snsId }, process.env.SECRET_KEY, { expiresIn: "30s" });
+            const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {expiresIn: "240h", });
+            await Token.create({ snsId: newUser.snsId, accessToken: token, refreshToken: refreshToken });
+    
+                   
+            return res.send({ jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' });
+          }
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   };
 
-  getKakaoUserInfo = async (req, res, next) => {
-    const { authorization } = req.headers;
-    const [authType, kakaoToken] = (authorization || "").split(" ");
-
-    const kakaoUserInfo = await this.kakaoRepository.getKakaoUserInfo(
-      kakaoToken
-    );
-
-    const isUserInfo = await this.exUserGetToken(kakaoUserInfo);
-
-    if (isUserInfo) {
-      return res.status(200).json(isUserInfo);
-    }
-
-    const newUserInfo = await this.createUserToken(kakaoUserInfo);
-
-    res.header("Authorization", `Bearer ${newUserInfo.accessToken}`);
-    return res.status(201).json(newUserInfo);
-  };
-
-  createUserToken = async (kakaoUserInfo) => {
-    const allUser = await this.kakaoRepository.findAllUser();
-    const newUser = await this.kakaoRepository.createNewUser(
-      kakaoUserInfo,
-      allUser
-    );
-
-    const newUserToken = await jwtService.createAccessToken(newUser._id);
-
-    const playRecord = await this.kakaoRepository.getPlayRecord(
-      newUser,
-      newUserToken
-    );
-
-    return playRecord;
-  };
-
-  exUserGetToken = async (kakaoUserInfo) => {
-    const isUser = await this.kakaoRepository.findOneById(kakaoUserInfo._id);
-
-    if (isUser) {
-      const token = jwt.sign({ userId: isUser.userId }, process.env.SECRET_KEY);
-      return token;
-    } else return;
-  };
 }
 
 module.exports = KakaoController;
