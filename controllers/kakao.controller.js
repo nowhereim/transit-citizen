@@ -165,7 +165,6 @@ class KakaoController {
     }
   };
 
-
 }
 
 module.exports = KakaoController;
