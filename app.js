@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/bammboo", (req, res) => {
-  res.send("bammboo");
+  res.send("qweasd");
 });
 
 app.use("/", routes);
