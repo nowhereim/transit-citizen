@@ -42,8 +42,7 @@ app.use(
   })
 );
 app.get("/", (req, res) => {
-  // res.render("socket");
-  res.send("어서와 처음이지?");
+  res.render("socket");
 });
 
 app.use("/", routes);
