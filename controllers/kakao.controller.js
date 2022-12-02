@@ -11,7 +11,7 @@ class KakaoController {
   kakaoRepository = new KakaoRepository();
   getKakaoToken = async (req, res, next) => {
     try {
-      console.log(req + "req 입니다 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+      console.log(req.query.code);
       const kakaoToken = await this.kakaoRepository.getKakaoToken(
         req.query.code
       );
