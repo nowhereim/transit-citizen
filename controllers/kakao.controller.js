@@ -26,7 +26,11 @@ class KakaoController {
       const isUser = await this.kakaoRepository.findOneById(kakaoUserInfo.id);
 
       const doneAdditionalInfo =
-        !isUser || !isUser.phoneNumber || !isUser.nickname || !isUser.gender
+        !isUser ||
+        !isUser.profileImage ||
+        !isUser.phoneNumber ||
+        !isUser.nickname ||
+        !isUser.gender
           ? false
           : true;
 
@@ -161,6 +165,7 @@ class KakaoController {
       res.status(400).json({ error: error.message });
     }
   };
+
 
 }
 
