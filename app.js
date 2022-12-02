@@ -8,7 +8,7 @@ const deleteim = require("./randomChat/delete");
 const connect = require("./schemas");
 const cloudinaryConfig = require("./config/cloudconfig");
 const helmet = require("helmet");
-const authmiddleware = require("./middleware/authmiddleware");
+const authmiddleware = require("./middlewares/auth_middleware");
 app.use(helmet.frameguard());
 app.use(helmet.hidePoweredBy({ setTo: "PHP 8.0.26" }));
 app.use(helmet.hsts());
