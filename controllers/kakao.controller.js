@@ -37,7 +37,7 @@ class KakaoController {
         const token = jwt.sign(
           { snsId: isUser.snsId },
           process.env.SECRET_KEY,
-          { expiresIn: "24h" }
+          { expiresIn: "30s" }
         );
         const refresh = await Token.findOne({ snsId: isUser.snsId });
 
