@@ -34,6 +34,7 @@ class KakaoController {
           : true;
 
       if (isUser) {
+
         const token = jwt.sign({ snsId: isUser.snsId }, process.env.SECRET_KEY, { expiresIn: "24h" } );
         const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {expiresIn: "240h", });
 
@@ -41,6 +42,7 @@ class KakaoController {
 
    
         return res.send({ jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' });
+
       } else {
         const newUser = await this.kakaoRepository.createUser(kakaoUserInfo.id);
 
