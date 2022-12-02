@@ -50,7 +50,7 @@ app.use("/", routes);
 app.post("/uploadFile", (req, res) => {
   upload.single("image")(req, res, (err) => {
     console.log(req.body);
-    res.status(201).send({ name: req.body.name, img: res.req.file.location });
+    res.status(200).send({ name: req.body.name, img: res.req.file.location });
   });
 });
 
