@@ -37,7 +37,7 @@ class KakaoRepository {
     });
     return newUser;
   };
-
+// 카카오
   getKakaoToken = async (code) => {
     const kakaoToken = await axios({
       method: "POST",
@@ -65,63 +65,30 @@ class KakaoRepository {
     return userInfo.data;
   };
 
+
+  // google 구글 google 구글 google 구글
   getGoogleToken = async (code) => {
     const googleToken = await axios({
       method: "POST",
-      url: "https://oauth2.googleapis.com/token",
+      url: `https://oauth2.googleapis.com/token?code=${code}&client_id=${process.env.GOOGLE_CLIENT_ID}&client_secret=${process.env.GOOGLE_CLIENT_SECRET}&redirect_uri=${process.env.GOOGLE_CALLBACK_URL_LOCAL}&grant_type=authorization_code`,
       headers: { "content-type": "application/x-www-form-urlencoded" },
 
-      data: qs.stringify({
-        grant_type: "authorization_code",
-        client_id: process.env.GOOGLE_CLIENT_ID,
-        client_secret: process.env.GOOGLE_CLIENT_SECRET,
-        redirect_uri: process.env.GOOGLE_CALLBACK_URL_LOCAL,
-        code: code,
-      }),
-    })
-      .then((res) => console.log(res))
-      .catch((error) => console.log(error));
+    });
+    return googleToken.data.access_token;
   };
+ 
 
   getGoogleUserInfo = async (access_token) => {
-    const googleAPI = `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${access_token}`;
-    const userInfo = await axios
-      .get(googleAPI, { headers: { authorization: `Bearer ${access_token}` } })
-      .then((el) => {
-        return el.data;
-      })
-      .catch((err) => {
-        console.log("err=", err);
-      });
-  };
-
-  getNaverToken = async (code, state) => {
-    const naverToken = await axios({
-      method: "POST",
-      url: "https://nid.naver.com/oauth2.0/authorize",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
-
-      data: qs.stringify({
-        client_id: process.env.NAVER_CLIENT_ID,
-        client_secret: process.env.NAVER_CLIENT_SECRET,
-        redirectUri: process.env.NAVER_CALLBACK_URL_LOCAL,
-        state: state,
-        code: code,
-      }),
-    });
-    return naverToken.data.access_token;
-  };
-
-  getNaverUserInfo = async (naverToken) => {
     const userInfo = await axios({
-      method: "post",
-      url: "https://openapi.naver.com/v1/nid/me",
+      method: "GET",
+      url: `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${access_token}`,
       headers: {
-        "content-Type": "application/x-www-form-urlencoded",
-        Authorization: `Bearer ${naverToken}`,
+        // "content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${access_token}`,
       },
     });
     return userInfo.data;
   };
+
 }
 module.exports = KakaoRepository;

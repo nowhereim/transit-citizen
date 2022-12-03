@@ -31,7 +31,6 @@ module.exports = async (req, res, next) => {
 
    
 
-    // 재발급을 위해서는 access token이 만료되어 있어야.
     if (authResult.message === "jwt expired") {
       const refresh = await Token.findOne({ snsId: decoded.snsId });
       // console.log(refresh);
