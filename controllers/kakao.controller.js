@@ -26,7 +26,6 @@ class KakaoController {
 
       const doneAdditionalInfo =
         !isUser ||
-        !isUser.profileImage ||
         !isUser.phoneNumber ||
         !isUser.nickname ||
         !isUser.gender
