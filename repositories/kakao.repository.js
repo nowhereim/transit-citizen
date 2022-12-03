@@ -37,7 +37,7 @@ class KakaoRepository {
     });
     return newUser;
   };
-
+// 카카오
   getKakaoToken = async (code) => {
     const kakaoToken = await axios({
       method: "POST",
