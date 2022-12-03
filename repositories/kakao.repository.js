@@ -50,6 +50,7 @@ class KakaoRepository {
         code: code,
       }),
     });
+    console.log(kakaoToken.data)
     return kakaoToken.data.access_token;
   };
 
