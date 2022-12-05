@@ -90,6 +90,18 @@ class userRepositories {
     }
   };
 
+
+  getUserInfo = async (userId) => {
+    const userInfo = await Local.findOne({ userId });
+     return userInfo;
+  }
+  
+  getUserInfo_join = async (id) => {
+    // const userInfo = await User.findById(id).populate("");
+    const userInfo = await User.findOne({ userLocal : id }).populate("");
+     return userInfo;
+  }
+
   isSameUserId_DB = async (userId) => {
     try {
       if (userId) {
