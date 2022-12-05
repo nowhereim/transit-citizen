@@ -27,22 +27,13 @@ class userServices {
     }
   };
 
-  createUserRequiredInfo = async (snsId, nickname, phoneNumber, gender) => {
+  createUserRequiredInfo = async (snsId, nickname, gender) => {
     try {
-      if (snsId) {
-        const createdUserInfoData =
-          await this.userRepositories.createUserInfo_DB(
-            snsId,
-            nickname,
-            phoneNumber,
-            gender
-          );
-        return createdUserInfoData;
-      } else {
-        throw new Error("snsId 값이 없으면 유저 정보를 조회할 수 없습니다");
-      }
+      await this.userRepositories.createUserInfo_DB(snsId, nickname, gender);
+      return;
     } catch (error) {
-      console.log(error);
+      console.log(error.name);
+      console.log(error.message);
     }
   };
 
@@ -87,17 +78,15 @@ class userServices {
 
     login = async (snsId, password) => {
           const userInfo = await this.userRepositories.getUserInfo(snsId);
-          console.log("userInfo-->", userInfo);
+        //   console.log("userInfo-->", userInfo);
  
           if (!userInfo) {
               throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
           }
-        const same = bcrypt.compareSync(password, userInfo.password);
-        console.log("same-->", same);
+
           if (!same) {
               throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
           }
-          
         
           const doneAdditionalInfo = (!userInfo.phoneNumber || !userInfo.nickname || !userInfo.gender) ? false : true;
         

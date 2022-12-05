@@ -16,32 +16,17 @@ class userControllers {
     }
   };
 
-  getRepeuiredUserInfo = async (req, res) => {
-    console.log(req.body);
-    console.log(res.locals.user)
-    console.log(res.locals.user.user.snsId)
+  getRepeuiredUserInfo = async (req, res, next) => {
     try {
-      const snsId = res.locals.user.user.snsId;
+      const { snsId } = res.locals.user;
       const representProfile = req.file.buffer;
-      const { nickname, phoneNumber, gender } = req.body;
-
+      const { nickname, gender } = req.body;
       await this.userServices.getUserRequiredProfile(snsId, representProfile);
-
-      await this.userServices.createUserRequiredInfo(
-        snsId,
-        nickname,
-        phoneNumber,
-        gender
-      );
-
-      res.status(200).json({
-        msg: "유저 필수 정보가 입력되었습니다.",
-        snsId:res.locals.user.user.snsId,
-        newtoken: res.locals.user.newToken,
-      });
+      await this.userServices.createUserRequiredInfo(snsId, nickname, gender);
+      res.status(200).send({ msg: "유저 필수 정보가 입력되었습니다." });
     } catch (error) {
       res.status(400).send({ error: "필수 정보를 모두 입력해주세요" });
-      console.log(error);
+      next(error);
     }
   };
 
@@ -92,19 +77,16 @@ class userControllers {
     }
   };
 
-
   login = async (req, res) => {
     try {
-        const {snsId, password} = req.body;
-        const userData = await this.userServices.login(snsId, password);
-      
-        res.status(200).send(userData);
+      const { userId, password } = req.body;
+      const userData = await this.userServices.login(userId, password);
+
+      res.status(200).send(userData);
     } catch (error) {
-        res.status(400).json({message: error.message})
+      res.status(400).json({ message: error.message });
     }
   };
-
-
 }
 
 module.exports = userControllers;
