@@ -9,6 +9,8 @@ const connect = require("./schemas");
 const cloudinaryConfig = require("./config/cloudconfig");
 const helmet = require("helmet");
 const authmiddleware = require("./middlewares/auth_middleware");
+const session = require("express-session");
+const fileStore = require("session-file-store")(session);
 app.use(helmet.frameguard());
 app.use(helmet.hidePoweredBy({ setTo: "PHP 8.0.26" }));
 app.use(helmet.hsts());
@@ -34,7 +36,13 @@ app.use(function (req, res, next) {
   });
   next();
 });
-
+app.use(
+  session({
+    secret: "SECRET",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 app.use(cloudinaryConfig);
 
 app.use(
@@ -62,7 +70,7 @@ app.post("/deleteFile", (req, res) => {
 });
 
 app.use((error, req, res, next) => {
-  res.status(500).json({ message: error.message });
+  res.status(501).json({ message: error.message });
 });
 
 module.exports = server;

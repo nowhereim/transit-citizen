@@ -18,7 +18,7 @@ class userControllers {
 
   getRepeuiredUserInfo = async (req, res, next) => {
     try {
-      const { snsId } = res.locals.user;
+      const snsId = res.locals.user.user.snsId;
       const representProfile = req.file.buffer;
       const { nickname, gender } = req.body;
       await this.userServices.getUserRequiredProfile(snsId, representProfile);
@@ -76,6 +76,20 @@ class userControllers {
       console.log(error.message);
     }
   };
+
+
+  login = async (req, res) => {
+    try {
+        const {userId, password} = req.body;
+        const userData = await this.userServices.login(userId, password);
+      
+        res.status(200).send(userData);
+    } catch (error) {
+        res.status(400).json({message: error.message})
+    }
+  };
+
+
 }
 
 module.exports = userControllers;
