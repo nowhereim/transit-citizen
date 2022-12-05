@@ -7,9 +7,9 @@ class userControllers {
 
   getRepeuiredUserInfo = async (req, res) => {
     console.log(req.body);
-    console.log(res.locals.newtoken)
+    console.log(res.locals.user)
     try {
-      const { snsId } = res.locals.user;
+      const snsId = res.locals.user.snsId;
       const representProfile = req.file.buffer;
       const { nickname, phoneNumber, gender } = req.body;
 
@@ -24,7 +24,7 @@ class userControllers {
 
       res.status(200).send({
         msg: "유저 필수 정보가 입력되었습니다.",
-        newtoken: res.locals.newtoken,
+        newtoken: res.locals.user.newtoken,
       });
     } catch (error) {
       res.status(400).send({ error: "필수 정보를 모두 입력해주세요" });
