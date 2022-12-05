@@ -83,11 +83,11 @@ class userServices {
           if (!userInfo) {
               throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
           }
-
+          const same = bcrypt.compareSync(password, userInfo.password);
           if (!same) {
               throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
           }
-        
+          
           const doneAdditionalInfo = (!userInfo.phoneNumber || !userInfo.nickname || !userInfo.gender) ? false : true;
         
           const tokenInfo = await this.tokenRepository.getTokenInfo(snsId);
