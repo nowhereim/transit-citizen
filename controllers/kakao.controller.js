@@ -15,17 +15,12 @@ class KakaoController {
 
     try {
       
-      const kakaoToken = await this.kakaoRepository.getKakaoToken(
-
-        req.query.code
-      );
+      const kakaoToken = await this.kakaoRepository.getKakaoToken(req.query.code);
       
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Content-Type", "text/html; charset=utf-8");
 
-      const kakaoUserInfo = await this.kakaoRepository.getKakaoUserInfo(
-        kakaoToken
-      );
+      const kakaoUserInfo = await this.kakaoRepository.getKakaoUserInfo(kakaoToken);
 
       const isUser = await this.kakaoRepository.findOneById(kakaoUserInfo.id);
 

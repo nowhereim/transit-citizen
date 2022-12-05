@@ -1,20 +1,20 @@
 const Token = require('../schemas/token');
-const Token_local = require('../schemas/token_local');
+
 
 
 class TokenRepository {
     
-    getTokenInfo = async (userId) => {
-        const tokenInfo = await Token_local.findOne({ userId: userId });
+    getTokenInfo = async (snsId) => {
+        const tokenInfo = await Token.findOne({ snsId: snsId });
         return tokenInfo;
     };
     
-    createToken = async (userId, token, refreshToken) => {
-        await Token_local.create({ userId: userId, accessToken: token, refreshToken: refreshToken });
+    createToken = async (snsId, token, refreshToken) => {
+        await Token.create({ snsId: snsId, accessToken: token, refreshToken: refreshToken });
     };
     
-    updateToken = async (userId, token, refreshToken) => {
-        await Token_local.updateOne({ userId: userId }, { $set: { accessToken: token, refreshToken: refreshToken } });
+    updateToken = async (snsId, token, refreshToken) => {
+        await Token.updateOne({ snsId: snsId }, { $set: { accessToken: token, refreshToken: refreshToken } });
       };
 
 }

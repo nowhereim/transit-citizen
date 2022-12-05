@@ -76,9 +76,9 @@ class userServices {
 
   };
 
-      login = async (userId, password) => {
-          const userInfo = await this.userRepositories.getUserInfo(userId); //
-          // console.log("userInfo-->", userInfo);
+    login = async (snsId, password) => {
+          const userInfo = await this.userRepositories.getUserInfo(snsId);
+        //   console.log("userInfo-->", userInfo);
  
           if (!userInfo) {
               throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
@@ -87,31 +87,25 @@ class userServices {
           if (!same) {
               throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
           }
-
-          const userInfo_join = await this.userRepositories.getUserInfo_join(userInfo._id);
-          // console.log("userInfo_join-->", userInfo_join);
-
-          const doneAdditionalInfo = (!userInfo_join.phoneNumber || !userInfo_join.nickname || !userInfo_join.gender) ? false : true;
+          
+          const doneAdditionalInfo = (!userInfo.phoneNumber || !userInfo.nickname || !userInfo.gender) ? false : true;
         
-          // const tokenInfo = await Token.findOne({ snsId: snsId });
-          const tokenInfo = await this.tokenRepository.getTokenInfo(userId);
+          const tokenInfo = await this.tokenRepository.getTokenInfo(snsId);
 
           if (!tokenInfo) { // 최초 로그인
-              const token = jwt.sign({ userId: userId }, process.env.SECRET_KEY, { expiresIn: "24h" });
+              const token = jwt.sign({ snsId: snsId }, process.env.SECRET_KEY, { expiresIn: "24h" });
               const refreshToken = jwt.sign({}, process.env.SECRET_KEY, { expiresIn: "240h", });
-              // await Token.create({ snsId: snsId, accessToken: token, refreshToken: refreshToken });
-              await this.tokenRepository.createToken(userId, token, refreshToken);
+              await this.tokenRepository.createToken(snsId, token, refreshToken);
 
               return { jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' };
           } else {
-              const token = jwt.sign({ userId: userId }, process.env.SECRET_KEY, { expiresIn: "24h" });
+              const token = jwt.sign({ snsId: snsId }, process.env.SECRET_KEY, { expiresIn: "24h" });
               const refreshToken = jwt.sign({}, process.env.SECRET_KEY, { expiresIn: "240h", });
-              // await Token.updateOne({ snsId: snsId }, { $set: { accessToken: token, refreshToken: refreshToken } });
-              await this.tokenRepository.updateToken(userId, token, refreshToken);
+              await this.tokenRepository.updateToken(snsId, token, refreshToken);
 
               return { jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' };
           }
-      };
+      };  
 
 
 
