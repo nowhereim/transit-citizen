@@ -12,13 +12,13 @@ this.userControllers = new UserControllers();
 // 유저 정보 입력
 router.post(
   "/",
-  authMiddleware,
+  // authMiddleware,
   representProfileUpload,
   validationMiddleware(userValidation.user),
   this.userControllers.getRepeuiredUserInfo
 );
 
 // 유저 닉네임 중복 검사
-router.post("/check", authMiddleware, this.userControllers.nicknameCheck);
-
+router.post("/check",  this.userControllers.nicknameCheck);
+// authMiddleware,
 module.exports = router;
