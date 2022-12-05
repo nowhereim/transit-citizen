@@ -5,6 +5,10 @@ const { Schema } = mongoose;
 // const now = moment().format("YYYY-MM-DD HH:mm:ss");
 
 const userSchema = new Schema({
+  userLocal: {
+    type: mongoose.Types.ObjectId,
+    ref: "local",
+  },
   snsId: {
     type: String,
     required: true,

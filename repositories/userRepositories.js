@@ -1,4 +1,5 @@
 const User = require("../schemas/user");
+const Local = require("../schemas/local");
 
 class userRepositories {
   createUserInfo_DB = async (snsId, nickname, phoneNumber, gender) => {
@@ -68,6 +69,19 @@ class userRepositories {
       console.log(error.message);
     }
   };
+
+
+  getUserInfo = async (userId) => {
+    const userInfo = await Local.findOne({ userId });
+     return userInfo;
+  }
+  
+  getUserInfo_join = async (id) => {
+    // const userInfo = await User.findById(id).populate("");
+    const userInfo = await User.findOne({ userLocal : id }).populate("");
+     return userInfo;
+  }
+
 }
 
 module.exports = userRepositories;
