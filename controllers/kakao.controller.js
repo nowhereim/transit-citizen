@@ -8,12 +8,15 @@ const request = require("request-promise");
 const KakaoRepository = require("../repositories/kakao.repository");
 
 class KakaoController {
+
   kakaoRepository = new KakaoRepository();
 
   getKakaoToken = async (req, res, next) => {
+
     try {
       
       const kakaoToken = await this.kakaoRepository.getKakaoToken(
+
         req.query.code
       );
       
@@ -40,7 +43,6 @@ class KakaoController {
 
         await Token.updateOne({ snsId: isUser.snsId }, { $set: { accessToken: token, refreshToken: refreshToken } });
 
-   
         return res.send({ jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' });
       } else {
         const newUser = await this.kakaoRepository.createUser(kakaoUserInfo.id);
@@ -63,10 +65,8 @@ class KakaoController {
       const code = req.query.code;
       
       const googleToken = await this.kakaoRepository.getGoogleToken(code);
-      
 
       const googleUserInfo = await this.kakaoRepository.getGoogleUserInfo(googleToken);
-      
 
       const isUser = await this.kakaoRepository.findOneById(googleUserInfo.id);
 
@@ -80,6 +80,7 @@ class KakaoController {
 
       if (isUser) {
         const token = jwt.sign({ snsId: isUser.snsId }, process.env.SECRET_KEY, { expiresIn: "24h" } );
+
         const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {expiresIn: "240h", });
 
         await Token.updateOne({ snsId: isUser.snsId }, { $set: { accessToken: token, refreshToken: refreshToken } });
@@ -148,8 +149,7 @@ class KakaoController {
             const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {expiresIn: "240h", });
     
             await Token.updateOne({ snsId: isUser.snsId }, { $set: { accessToken: token, refreshToken: refreshToken } });
-    
-          
+
             return res.send({ jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' });
           } else {
             const newUser = await this.kakaoRepository.createUserNaver(naverUserInfo.id);

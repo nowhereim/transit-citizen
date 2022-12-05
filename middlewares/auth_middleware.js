@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
-
 const User = require("../schemas/user");
 const Token = require("../schemas/token");
+
 require("dotenv").config();
 
 // 미들웨어 - 사용자인증 (sequelize 변경)
@@ -54,9 +54,11 @@ module.exports = async (req, res, next) => {
         } else {
           const newToken = jwt.sign( { snsId: decoded.snsId }, process.env.SECRET_KEY, { expiresIn: "24h" } );
           await Token.updateOne({ snsId: decoded.snsId }, { $set: { accessToken: newToken } });
-          
-
-          res.status(401).send({ ok: 6, newJwtToken: newToken });
+          await User.findOne({ snsId: decoded.snsId }).then((user) => {
+            res.locals.user = {user:user, newToken:newToken};
+            next();
+            
+          });
         }
       }
 
