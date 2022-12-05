@@ -56,7 +56,8 @@ module.exports = async (req, res, next) => {
           await Token.updateOne({ snsId: decoded.snsId }, { $set: { accessToken: newToken } });
           
 
-          res.status(401).send({ ok: 6, newJwtToken: newToken });
+          res.locals.newtoken = newToken;
+          next();
         }
       }
 
