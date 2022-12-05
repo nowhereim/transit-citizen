@@ -6,9 +6,6 @@ class userControllers {
   }
 
   getRepeuiredUserInfo = async (req, res) => {
-    console.log(req.body);
-    console.log(res.locals.user)
-    console.log(res.locals.user.user.snsId)
     try {
       const snsId = res.locals.user.user.snsId;
       const representProfile = req.file.buffer;
