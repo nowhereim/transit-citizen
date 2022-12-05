@@ -9,11 +9,11 @@ class AuthControllers {
 
   getUserPhoneNumber = async (req, res, next) => {
     try {
+      const { snsId } = res.locals.user;
       const { phoneNumber } = req.body;
-      if (!phoneNumber || phoneNumber.search(phoneCheck) === -1) {
+      if (!phoneNumber || phoneNumber.search(phoneCheck) === -1)
         return res.status(400).send({ error: "잘못된 형식입니다" });
-      }
-      await this.authServices.sendAuthorityCheckMessage(phoneNumber);
+      await this.authServices.sendAuthorityCheckMessage(snsId, phoneNumber);
       return res.status(200).send({ msg: "인증번호가 전송 되었습니다" });
     } catch (error) {
       next(error);

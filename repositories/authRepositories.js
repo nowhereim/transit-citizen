@@ -21,9 +21,9 @@ class AuthRepositories {
     }
   };
 
-  pushPhoneAuthData = async (phoneNumber, authCode) => {
+  pushPhoneAuthData = async (snsId, phoneNumber, authCode) => {
     try {
-      await Auth.create(phoneNumber, authCode);
+      await Auth.create(snsId, phoneNumber, authCode);
       return;
     } catch (error) {
       throw error;
