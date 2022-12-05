@@ -22,8 +22,10 @@ class userControllers {
         gender
       );
 
-      res.status(200).send({
+      res.status(200).json({
         msg: "유저 필수 정보가 입력되었습니다.",
+        msg2:res.locals.user.snsId,
+        msg3:snsId,
         newtoken: res.locals.user.newtoken,
       });
     } catch (error) {
