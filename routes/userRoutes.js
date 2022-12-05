@@ -31,9 +31,9 @@ router.post(
 // 유저 닉네임 중복 검사
 router.post("/check", authMiddleware, this.userControllers.nicknameCheck);
 
-
 // 로그인 (/user/login)
 router.post("/login", this.userControllers.login);
+
 // 유저 아이디 중복 검사
 router.post("/checkid", this.userControllers.userIdCheck);
 

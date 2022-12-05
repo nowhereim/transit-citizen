@@ -2,11 +2,11 @@ const User = require("../schemas/user");
 const bcrpyt = require("bcrypt");
 
 class userRepositories {
-  createLocalUserInfo_DB = async (userId, password) => {
+  createLocalUserInfo_DB = async (snsId, password) => {
     try {
       const repassword = await bcrpyt.hash(password, 5);
       await User.create({
-        snsId: userId,
+        snsId,
         password: repassword,
         provider: "local",
       });
@@ -74,25 +74,17 @@ class userRepositories {
     }
   };
 
-
   getUserInfo = async (snsId) => {
     const userInfo = await User.findOne({ snsId });
-     return userInfo;
-  }
-  
+    return userInfo;
+  };
 
-  isSameUserId_DB = async (userId) => {
+  isSameUserId_DB = async (snsId) => {
     try {
-      if (userId) {
-        const data = await Local.findOne({ userId });
-        console.log(data);
-        return data;
-      } else {
-        throw error;
-      }
+      const data = await User.findOne({ snsId });
+      return data;
     } catch (error) {
-      console.log(error.name);
-      console.log(error.message);
+      throw error;
     }
   };
 }
