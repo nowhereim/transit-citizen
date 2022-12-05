@@ -1,4 +1,6 @@
 const User = require("../schemas/user");
+const Local = require("../schemas/local");
+const bcrpyt = require("bcrypt");
 
 class userRepositories {
   createLocalUserInfo_DB = async (userId, password) => {
