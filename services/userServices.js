@@ -15,9 +15,11 @@ class userServices {
     this.userRepositories = new userRepositories();
   }
 
-  createLocalUserInfo = async (userId, password) => {
+  createLocalUserInfo = async (snsId, password) => {
     try {
-      await this.userRepositories.createLocalUserInfo_DB(userId, password);
+      console.log(snsId);
+      console.log("hello");
+      await this.userRepositories.createLocalUserInfo_DB(snsId, password);
       return;
     } catch (error) {
       console.log(error.name);
@@ -124,9 +126,9 @@ class userServices {
     }
   };
 
-  checkIsSameUserId = async (userId) => {
+  checkIsSameUserId = async (snsId) => {
     try {
-      const data = await this.userRepositories.isSameUserId_DB(userId);
+      const data = await this.userRepositories.isSameUserId_DB(snsId);
       if (data !== null) return false; // 유저 아이디 중복 O
       return;
     } catch (error) {
