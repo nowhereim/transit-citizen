@@ -9,6 +9,8 @@ const connect = require("./schemas");
 const cloudinaryConfig = require("./config/cloudconfig");
 const helmet = require("helmet");
 const authmiddleware = require("./middlewares/auth_middleware");
+const session = require("express-session");
+const fileStore = require("session-file-store")(session);
 app.use(helmet.frameguard());
 app.use(helmet.hidePoweredBy({ setTo: "PHP 8.0.26" }));
 app.use(helmet.hsts());
@@ -34,7 +36,13 @@ app.use(function (req, res, next) {
   });
   next();
 });
-
+app.use(
+  session({
+    secret: "SECRET",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 app.use(cloudinaryConfig);
 
 app.use(
@@ -47,12 +55,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/", routes);
-
-app.get("/auth",authmiddleware,(req,res)=>{
-  console.log("heybaby");
-  res.status(201).send("여기 통과 한거 맞슴");
-})
-
 
 app.post("/uploadFile", (req, res) => {
   upload.single("image")(req, res, (err) => {
