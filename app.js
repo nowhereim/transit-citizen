@@ -48,6 +48,12 @@ app.get("/", (req, res) => {
 
 app.use("/", routes);
 
+app.get("/auth",authmiddleware,(req,res)=>{
+  console.log("heybaby");
+  res.status(201).send("여기 통과 한거 맞슴");
+})
+
+
 app.post("/uploadFile", (req, res) => {
   upload.single("image")(req, res, (err) => {
     console.log(req.body);

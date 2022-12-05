@@ -5,3 +5,6 @@ views
 randomChat
 testCode
 package-lock.json
+loginController.js
+data
+*.csv

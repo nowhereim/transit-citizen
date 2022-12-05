@@ -39,6 +39,7 @@ class KakaoRepository {
   };
 // 카카오
   getKakaoToken = async (code) => {
+    console.log(code + "레포지토리부분");
     const kakaoToken = await axios({
       method: "POST",
       url: "https://kauth.kakao.com/oauth/token",
@@ -50,6 +51,7 @@ class KakaoRepository {
         code: code,
       }),
     });
+    console.log(kakaoToken.data)
     return kakaoToken.data.access_token;
   };
 
