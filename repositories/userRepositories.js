@@ -1,5 +1,4 @@
 const User = require("../schemas/user");
-const Local = require("../schemas/local");
 const bcrpyt = require("bcrypt");
 
 class userRepositories {
@@ -81,7 +80,6 @@ class userRepositories {
      return userInfo;
   }
   
-
 
   isSameUserId_DB = async (userId) => {
     try {
