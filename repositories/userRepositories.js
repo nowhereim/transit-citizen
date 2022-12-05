@@ -6,13 +6,9 @@ class userRepositories {
   createLocalUserInfo_DB = async (userId, password) => {
     try {
       const repassword = await bcrpyt.hash(password, 5);
-      const localUserInfo = await Local.create({
-        userId,
-        password: repassword,
-      });
       await User.create({
-        userLocal: localUserInfo._id,
-        snsId: "null",
+        snsId: userId,
+        password: repassword,
         provider: "local",
       });
       return;
@@ -22,21 +18,10 @@ class userRepositories {
     }
   };
 
-  createUserInfo_DB = async (snsId, nickname, phoneNumber, gender) => {
+  createUserInfo_DB = async (snsId, nickname, gender) => {
     try {
-      if (snsId) {
-        const createdUserInfoData = await User.findOneAndUpdate(
-          { snsId },
-          {
-            nickname,
-            phoneNumber,
-            gender,
-          }
-        );
-        return createdUserInfoData;
-      } else {
-        throw new Error("snsId 값이 없으면 유저 정보를 조회할 수 없습니다");
-      }
+      await User.findOneAndUpdate({ snsId }, { nickname, gender });
+      return;
     } catch (error) {
       console.log(error.name);
       console.log(error.message);

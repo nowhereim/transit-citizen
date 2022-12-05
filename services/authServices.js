@@ -8,23 +8,19 @@ class AuthServices {
     this.sensServices = new SensServices();
   }
 
-  sendAuthorityCheckMessage = async (phoneNumber) => {
+  sendAuthorityCheckMessage = async (snsId, phoneNumber) => {
     try {
-      if (phoneNumber) {
-        // 인증 번호 발급 ( 6자리 ) : 3분 후 만료
-        const authNumber = crypto.randomBytes(6).toString("hex").slice(6);
-
-        const message = `:: 환승시민 :: 본인 확인을 위해 인증번호 [${authNumber}]를 입력해주세요`;
-
-        this.sensServices.send_message(phoneNumber, message);
-
-        await this.authRepositories.pushPhoneAuthData({
-          phoneNumber,
-          authCode: authNumber,
-        });
-      }
+      // 인증 번호 6자리 발급 ( 3분 후 만료 )
+      const authNumber = crypto.randomBytes(6).toString("hex").slice(6);
+      const message = `:: 환승시민 :: 본인 확인을 위해 인증번호 [${authNumber}]를 입력해주세요`;
+      this.sensServices.send_message(phoneNumber, message);
+      await this.authRepositories.pushPhoneAuthData({
+        snsId,
+        phoneNumber,
+        authCode: authNumber,
+      });
     } catch (error) {
-      throw new Error("유저정보없음");
+      throw error;
     }
   };
 

@@ -2,11 +2,11 @@ var mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-  userLocal: {
-    type: mongoose.Types.ObjectId,
-    ref: "local",
-  },
   snsId: {
+    type: String,
+    required: true,
+  },
+  password: {
     type: String,
     required: true,
   },
