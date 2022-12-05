@@ -8,7 +8,7 @@ class userControllers {
   getRepeuiredUserInfo = async (req, res) => {
     console.log(req.body);
     try {
-      const { snsId } = 2547391103;
+      const snsId = 2547391103;
       const representProfile = req.file.buffer;
       const { nickname, phoneNumber, gender } = req.body;
 
