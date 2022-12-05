@@ -74,25 +74,17 @@ class userRepositories {
     }
   };
 
-
   getUserInfo = async (snsId) => {
     const userInfo = await User.findOne({ snsId });
-     return userInfo;
-  }
-  
+    return userInfo;
+  };
 
   isSameUserId_DB = async (userId) => {
     try {
-      if (userId) {
-        const data = await Local.findOne({ userId });
-        console.log(data);
-        return data;
-      } else {
-        throw error;
-      }
+      const data = await User.findOne({ snsId: userId });
+      return data;
     } catch (error) {
-      console.log(error.name);
-      console.log(error.message);
+      throw error;
     }
   };
 }

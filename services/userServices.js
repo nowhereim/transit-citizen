@@ -1,18 +1,16 @@
 const cloudinary = require("cloudinary");
 const DatauriParser = require("datauri/parser");
 const parser = new DatauriParser();
-const userRepositories = require('../repositories/userRepositories');
+const userRepositories = require("../repositories/userRepositories");
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 // const Token = require("../schemas/token");
 const TokenRepository = require("../repositories/token.repository");
 
-
-
 class userServices {
   tokenRepository = new TokenRepository();
-    
+
   constructor() {
     this.userRepositories = new userRepositories();
   }
@@ -73,52 +71,66 @@ class userServices {
     } catch (error) {
       throw new Error("nickname이 정의되지 않았습니다");
     }
-
   };
 
-    login = async (snsId, password) => {
-          const userInfo = await this.userRepositories.getUserInfo(snsId);
-        //   console.log("userInfo-->", userInfo);
- 
-          if (!userInfo) {
-              throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
-          }
-          const same = bcrypt.compareSync(password, userInfo.password);
-          if (!same) {
-              throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
-          }
-          
-          const doneAdditionalInfo = (!userInfo.phoneNumber || !userInfo.nickname || !userInfo.gender) ? false : true;
-        
-          const tokenInfo = await this.tokenRepository.getTokenInfo(snsId);
+  login = async (snsId, password) => {
+    const userInfo = await this.userRepositories.getUserInfo(snsId);
+    //   console.log("userInfo-->", userInfo);
 
-          if (!tokenInfo) { // 최초 로그인
-              const token = jwt.sign({ snsId: snsId }, process.env.SECRET_KEY, { expiresIn: "24h" });
-              const refreshToken = jwt.sign({}, process.env.SECRET_KEY, { expiresIn: "240h", });
-              await this.tokenRepository.createToken(snsId, token, refreshToken);
+    if (!userInfo) {
+      throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.");
+    }
+    const same = bcrypt.compareSync(password, userInfo.password);
+    if (!same) {
+      throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.");
+    }
 
-              return { jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' };
-          } else {
-              const token = jwt.sign({ snsId: snsId }, process.env.SECRET_KEY, { expiresIn: "24h" });
-              const refreshToken = jwt.sign({}, process.env.SECRET_KEY, { expiresIn: "240h", });
-              await this.tokenRepository.updateToken(snsId, token, refreshToken);
+    const doneAdditionalInfo =
+      !userInfo.phoneNumber || !userInfo.nickname || !userInfo.gender
+        ? false
+        : true;
 
-              return { jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' };
-          }
-      };  
+    const tokenInfo = await this.tokenRepository.getTokenInfo(snsId);
 
+    if (!tokenInfo) {
+      // 최초 로그인
+      const token = jwt.sign({ snsId: snsId }, process.env.SECRET_KEY, {
+        expiresIn: "24h",
+      });
+      const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
+        expiresIn: "240h",
+      });
+      await this.tokenRepository.createToken(snsId, token, refreshToken);
 
+      return {
+        jwtToken: token,
+        doneAdditionalInfo: doneAdditionalInfo,
+        message: "로그인하였습니다.",
+      };
+    } else {
+      const token = jwt.sign({ snsId: snsId }, process.env.SECRET_KEY, {
+        expiresIn: "24h",
+      });
+      const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
+        expiresIn: "240h",
+      });
+      await this.tokenRepository.updateToken(snsId, token, refreshToken);
+
+      return {
+        jwtToken: token,
+        doneAdditionalInfo: doneAdditionalInfo,
+        message: "로그인하였습니다.",
+      };
+    }
+  };
 
   checkIsSameUserId = async (userId) => {
     try {
-      if (userId) {
-        const data = await this.userRepositories.isSameUserId_DB(userId);
-        console.log(`service ${data}`);
-        if (data !== null) return false; // 유저 아이디 중복 O
-        return;
-      }
+      const data = await this.userRepositories.isSameUserId_DB(userId);
+      if (data !== null) return false; // 유저 아이디 중복 O
+      return;
     } catch (error) {
-      throw new Error("userId가 정의되지 않았습니다");
+      throw error;
     }
   };
 }

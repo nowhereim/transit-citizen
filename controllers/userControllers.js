@@ -55,25 +55,17 @@ class userControllers {
   };
 
   // 아이디 중복 확인
-  userIdCheck = async (req, res) => {
+  userIdCheck = async (req, res, next) => {
     try {
       const { userId } = req.body;
+      if (!userId)
+        return res.status(400).send({ error: "아이디를 입력하세요" });
       const userIdCheck = await this.userServices.checkIsSameUserId(userId);
-      if (userIdCheck === false) {
-        return res.status(400).send({
-          error: "중복된 아이디입니다.",
-        });
-      } else {
-        return res.status(200).send({
-          msg: "사용 가능한 아이디 입니다.",
-        });
-      }
+      if (userIdCheck === false)
+        return res.status(400).send({ error: "중복된 아이디입니다." });
+      return res.status(200).send({ msg: "사용 가능한 아이디 입니다." });
     } catch (error) {
-      res.status(400).send({
-        error: "예상치 못한 에러 발생",
-      });
-      console.log(error.name);
-      console.log(error.message);
+      next(error);
     }
   };
 
@@ -81,7 +73,6 @@ class userControllers {
     try {
       const { userId, password } = req.body;
       const userData = await this.userServices.login(userId, password);
-
       res.status(200).send(userData);
     } catch (error) {
       res.status(400).json({ message: error.message });
