@@ -3,10 +3,10 @@ const router = express.Router();
 const AuthControllers = require("../controllers/authControllers");
 this.authControllers = new AuthControllers();
 
-// 메시지 보내기
-router.post("/phone", this.authControllers.getUserPhoneNumber);
+// 인증 메시지 보내기
+router.post("/phone", authMiddleware, this.authControllers.getUserPhoneNumber);
 
-// 인증 번호 비교
+// 인증 번호 검증
 router.post(
   "/compare",
   authMiddleware,
