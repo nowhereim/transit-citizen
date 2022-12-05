@@ -10,12 +10,12 @@ this.profileControllers = new ProfileControllers();
 // 프로필 정보 변경
 router.post(
   "/",
-  // authMiddleware,
+  authMiddleware,
   imagesUpload,
   this.profileControllers.editProfileInfo
 );
 
 // 프로필 정보 가져오기
-router.get("/", this.profileControllers.showProfileInfo);
-// authMiddleware, 
+router.get("/", authMiddleware, this.profileControllers.showProfileInfo);
+
 module.exports = router;
