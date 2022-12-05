@@ -5,6 +5,17 @@ class userControllers {
     this.userServices = new UserServices();
   }
 
+  // 회원가입
+  localSignUpInfo = async (req, res, next) => {
+    try {
+      const { userId, password, confirmpassword } = req.body;
+      await this.userServices.createLocalUserInfo(userId, password);
+      return res.status(200).send({ msg: "성공" });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   getRepeuiredUserInfo = async (req, res) => {
     console.log(req.body);
     console.log(res.locals.user)
@@ -47,6 +58,29 @@ class userControllers {
       } else {
         return res.status(200).send({
           msg: "사용 가능한 닉네임 입니다.",
+        });
+      }
+    } catch (error) {
+      res.status(400).send({
+        error: "예상치 못한 에러 발생",
+      });
+      console.log(error.name);
+      console.log(error.message);
+    }
+  };
+
+  // 아이디 중복 확인
+  userIdCheck = async (req, res) => {
+    try {
+      const { userId } = req.body;
+      const userIdCheck = await this.userServices.checkIsSameUserId(userId);
+      if (userIdCheck === false) {
+        return res.status(400).send({
+          error: "중복된 아이디입니다.",
+        });
+      } else {
+        return res.status(200).send({
+          msg: "사용 가능한 아이디 입니다.",
         });
       }
     } catch (error) {
