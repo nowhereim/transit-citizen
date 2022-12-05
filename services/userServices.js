@@ -18,22 +18,13 @@ class userServices {
     }
   };
 
-  createUserRequiredInfo = async (snsId, nickname, phoneNumber, gender) => {
+  createUserRequiredInfo = async (snsId, nickname, gender) => {
     try {
-      if (snsId) {
-        const createdUserInfoData =
-          await this.userRepositories.createUserInfo_DB(
-            snsId,
-            nickname,
-            phoneNumber,
-            gender
-          );
-        return createdUserInfoData;
-      } else {
-        throw new Error("snsId 값이 없으면 유저 정보를 조회할 수 없습니다");
-      }
+      await this.userRepositories.createUserInfo_DB(snsId, nickname, gender);
+      return;
     } catch (error) {
-      console.log(error);
+      console.log(error.name);
+      console.log(error.message);
     }
   };
 
