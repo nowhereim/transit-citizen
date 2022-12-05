@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
-
 const User = require("../schemas/user");
 const Token = require("../schemas/token");
+
 require("dotenv").config();
 
 // 미들웨어 - 사용자인증 (sequelize 변경)
