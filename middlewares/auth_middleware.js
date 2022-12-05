@@ -54,9 +54,11 @@ module.exports = async (req, res, next) => {
         } else {
           const newToken = jwt.sign( { snsId: decoded.snsId }, process.env.SECRET_KEY, { expiresIn: "24h" } );
           await Token.updateOne({ snsId: decoded.snsId }, { $set: { accessToken: newToken } });
-          
+          await User.findOne({ snsId: decoded.snsId }).then((user) => {
+            res.locals.user = user, res.locals.token = newToken
+          })
 
-          res.locals.newtoken = newToken;
+          
           next();
         }
       }
