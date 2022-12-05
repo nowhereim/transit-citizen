@@ -9,7 +9,7 @@ class userControllers {
     console.log(req.body);
     console.log(res.locals.user)
     try {
-      const snsId = res.locals.user.snsId;
+      const snsId = res.locals.user.user.snsId;
       const representProfile = req.file.buffer;
       const { nickname, phoneNumber, gender } = req.body;
 
