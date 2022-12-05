@@ -95,8 +95,8 @@ class userControllers {
 
   login = async (req, res) => {
     try {
-        const {userId, password} = req.body;
-        const userData = await this.userServices.login(userId, password);
+        const {snsId, password} = req.body;
+        const userData = await this.userServices.login(snsId, password);
       
         res.status(200).send(userData);
     } catch (error) {
