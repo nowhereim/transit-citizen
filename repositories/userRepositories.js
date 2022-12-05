@@ -6,13 +6,9 @@ class userRepositories {
   createLocalUserInfo_DB = async (userId, password) => {
     try {
       const repassword = await bcrpyt.hash(password, 5);
-      const localUserInfo = await Local.create({
-        userId,
-        password: repassword,
-      });
       await User.create({
-        userLocal: localUserInfo._id,
-        snsId: "null",
+        snsId: userId,
+        password: repassword,
         provider: "local",
       });
       return;
