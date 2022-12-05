@@ -1,5 +1,4 @@
 const User = require("../schemas/user");
-const Local = require("../schemas/local");
 const bcrpyt = require("bcrypt");
 
 class userRepositories {
@@ -75,17 +74,16 @@ class userRepositories {
     }
   };
 
-
   getUserInfo = async (userId) => {
     const userInfo = await Local.findOne({ userId });
-     return userInfo;
-  }
-  
+    return userInfo;
+  };
+
   getUserInfo_join = async (id) => {
     // const userInfo = await User.findById(id).populate("");
-    const userInfo = await User.findOne({ userLocal : id }).populate("");
-     return userInfo;
-  }
+    const userInfo = await User.findOne({ userLocal: id }).populate("");
+    return userInfo;
+  };
 
   isSameUserId_DB = async (userId) => {
     try {
