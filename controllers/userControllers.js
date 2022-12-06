@@ -20,7 +20,7 @@ class userControllers {
 
   getRepeuiredUserInfo = async (req, res, next) => {
     try {
-      const { snsId } = res.locals.user;
+      const snsId = res.locals.user.user.snsId;
       const representProfile = req.file.buffer;
       const { nickname, gender } = req.body;
       if (!snsId)
@@ -34,13 +34,11 @@ class userControllers {
         return res.status(400).send({ error: "중복된 닉네임 입니다" });
       await this.userServices.getUserRequiredProfile(snsId, representProfile);
       await this.userServices.createUserRequiredInfo(snsId, nickname, gender);
-      return res
-        .status(200)
-        .send({
-          msg: "유저 필수 정보가 입력되었습니다.",
-          snsId: res.locals.user.user.snsId,
-          newtoken: res.locals.user.newToken,
-        });
+      return res.status(200).send({
+        msg: "유저 필수 정보가 입력되었습니다.",
+        snsId: res.locals.user.user.snsId,
+        newtoken: res.locals.user.newToken,
+      });
     } catch (error) {
       res.status(400).send({ error: "필수 정보를 모두 입력해주세요" });
       next(error);
