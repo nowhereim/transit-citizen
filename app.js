@@ -41,14 +41,14 @@ app.use(
     secret: "SECRET",
     resave: false,
     saveUninitialized: false,
-  })
+  }),
 );
 app.use(cloudinaryConfig);
 
 app.use(
   cors({
     origin: "*",
-  })
+  }),
 );
 app.get("/", (req, res) => {
   res.render("socket");
