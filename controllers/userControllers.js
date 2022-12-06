@@ -1,4 +1,3 @@
-const { default: next } = require("next");
 const UserServices = require("../services/userServices");
 
 class userControllers {
@@ -22,12 +21,7 @@ class userControllers {
 
   getRepeuiredUserInfo = async (req, res, next) => {
     try {
-<<<<<<< HEAD
       const { snsId } = res.locals.user;
-=======
-      console.log(res.locals.user);
-      const snsId = res.locals.user.user.snsId;
->>>>>>> 4f172a8 (hotfix 소셜로그인구현 및 프로필,DB연동,미들웨어 수정 및 연동)
       const representProfile = req.file.buffer;
       const { nickname, gender } = req.body;
       if (!snsId)
@@ -78,9 +72,9 @@ class userControllers {
 
   login = async (req, res) => {
     try {
-      const { userId, password } = req.body;
+      const { snsId, password } = req.body;
       // console.log("password-->", password);
-      const userData = await this.userServices.login(userId, password);
+      const userData = await this.userServices.login(snsId, password);
       res.status(200).send(userData);
     } catch (error) {
       res.status(400).json({ message: error.message });
