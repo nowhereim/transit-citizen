@@ -13,7 +13,7 @@ this.userControllers = new UserControllers();
 // 로컬 회원가입
 router.post(
   "/signup",
-  isNotLoggedIn,
+  // isNotLoggedIn,
   validationMiddleware(signupValidation.signup),
   this.userControllers.localSignUpInfo,
 );
@@ -32,7 +32,6 @@ router.post("/check", authMiddleware, this.userControllers.nicknameCheck);
 
 // 로그인 (/user/login)
 router.post("/login", this.userControllers.login);
-
 // 유저 아이디 중복 검사
 router.post("/checkid", this.userControllers.userIdCheck);
 

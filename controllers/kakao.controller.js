@@ -43,6 +43,8 @@ class KakaoController {
 
       const isUser = await this.kakaoRepository.findOneById(naverUserInfo.id);
 
+      const donePhoneNumber = !isUser || !isUser.phoneNumber ? false : true;
+
       const doneAdditionalInfo =
         !isUser || !isUser.phoneNumber || !isUser.nickname || !isUser.gender
           ? false
@@ -86,6 +88,7 @@ class KakaoController {
           accessToken: token,
           refreshToken: refreshToken,
         });
+
         return res.send({
           jwtToken: token,
           doneAdditionalInfo: doneAdditionalInfo,

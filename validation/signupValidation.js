@@ -1,11 +1,10 @@
 const Joi = require("joi");
 
 exports.signup = Joi.object({
-  userId: Joi.string()
+  snsId: Joi.string()
     .min(6)
     .max(15)
     .pattern(new RegExp(/^([a-zA-Z0-9]{6,15})$/))
-    // .regex(/^([a-zA-Z0-9]{6,15})$/)
     .required()
     .messages({
       "string.min": "아이디는 6글자 이상이어야 합니다",

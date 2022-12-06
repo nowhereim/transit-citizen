@@ -75,9 +75,9 @@ class userRepositories {
   };
 
   getUserInfo = async (snsId) => {
-    const userInfo = await User.findOne({ snsId });
-    return userInfo;
-  };
+    const userInfo = await User.findOne({ snsId: snsId });
+     return userInfo;
+  }
 
   isSameUserId_DB = async (snsId) => {
     try {

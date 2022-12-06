@@ -4,7 +4,6 @@ const AuthRoutes = require("./authRoutes");
 const UserRoutes = require("./userRoutes");
 const ProfileRoutes = require("./profileRoutes");
 const kakaoRouter = require("./kakao.js");
-const testRouter = require("./test.js");
 const oauthRoutes = require("./kakaoLogin");
 const gauthRoutes = require("./googleLogin");
 router.use("/oauth", oauthRoutes);
@@ -12,8 +11,6 @@ router.use("/oauth", oauthRoutes);
 router.use("/gauth", gauthRoutes);
 
 router.use("/auth", kakaoRouter);
-
-router.use("/test", testRouter);
 
 // 각종 인증 기능
 router.use("/auth2", AuthRoutes);

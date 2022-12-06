@@ -1,15 +1,12 @@
-const { default: next } = require("next");
 const UserServices = require("../services/userServices");
 
 class userControllers {
   constructor() {
     this.userServices = new UserServices();
   }
-
   // 로컬 회원가입
   localSignUpInfo = async (req, res, next) => {
     try {
-      console.log(res.locals.user);
       const { snsId, password, confirmpassword } = req.body;
       const userIdCheck = await this.userServices.checkIsSameUserId(snsId);
       if (userIdCheck === false)
@@ -23,7 +20,6 @@ class userControllers {
 
   getRepeuiredUserInfo = async (req, res, next) => {
     try {
-      console.log(res.locals.user);
       const snsId = res.locals.user.user.snsId;
       const representProfile = req.file.buffer;
       const { nickname, gender } = req.body;
@@ -40,6 +36,7 @@ class userControllers {
       await this.userServices.createUserRequiredInfo(snsId, nickname, gender);
       return res.status(200).send({
         msg: "유저 필수 정보가 입력되었습니다.",
+        snsId: res.locals.user.user.snsId,
         newtoken: res.locals.user.newToken,
       });
     } catch (error) {
@@ -78,42 +75,9 @@ class userControllers {
 
   login = async (req, res) => {
     try {
-      const { userId, password } = req.body;
-      const userData = await this.userServices.login(userId, password);
-      res.status(200).send(userData);
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  };
-
-  // 아이디 중복 확인
-  userIdCheck = async (req, res) => {
-    try {
-      const { userId } = req.body;
-      const userIdCheck = await this.userServices.checkIsSameUserId(userId);
-      if (userIdCheck === false) {
-        return res.status(400).send({
-          error: "중복된 아이디입니다.",
-        });
-      } else {
-        return res.status(200).send({
-          msg: "사용 가능한 아이디 입니다.",
-        });
-      }
-    } catch (error) {
-      res.status(400).send({
-        error: "예상치 못한 에러 발생",
-      });
-      console.log(error.name);
-      console.log(error.message);
-    }
-  };
-
-  login = async (req, res) => {
-    try {
-      const { userId, password } = req.body;
-      const userData = await this.userServices.login(userId, password);
-
+      const { snsId, password } = req.body;
+      // console.log("password-->", password);
+      const userData = await this.userServices.login(snsId, password);
       res.status(200).send(userData);
     } catch (error) {
       res.status(400).json({ message: error.message });

@@ -75,9 +75,10 @@ class userServices {
     }
   };
 
+
   login = async (snsId, password) => {
     const userInfo = await this.userRepositories.getUserInfo(snsId);
-    //   console.log("userInfo-->", userInfo);
+    // console.log("userInfo-->", userInfo);
 
     if (!userInfo) {
       throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.");
@@ -86,9 +87,11 @@ class userServices {
     if (!same) {
       throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.");
     }
+ 
+    const donePhoneNumber = (!userInfo.phoneNumber) ? false : true;
 
     const doneAdditionalInfo =
-      !userInfo.phoneNumber || !userInfo.nickname || !userInfo.gender
+      !userInfo.nickname || !userInfo.representProfile
         ? false
         : true;
 
@@ -106,6 +109,7 @@ class userServices {
 
       return {
         jwtToken: token,
+        donePhoneNumber: donePhoneNumber,
         doneAdditionalInfo: doneAdditionalInfo,
         message: "로그인하였습니다.",
       };
@@ -120,6 +124,7 @@ class userServices {
 
       return {
         jwtToken: token,
+        donePhoneNumber: donePhoneNumber,
         doneAdditionalInfo: doneAdditionalInfo,
         message: "로그인하였습니다.",
       };
