@@ -74,10 +74,36 @@ class userServices {
       throw new Error("nickname이 정의되지 않았습니다");
     }
   };
+    login = async (snsId, password) => {
+          const userInfo = await this.userRepositories.getUserInfo(snsId);
+      //     console.log("userInfo-->", userInfo);
+      // console.log("password-->", password);
+          if (!userInfo) {
+              throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
+          }
+          const same = bcrypt.compareSync(password, userInfo.password);
+          if (!same) {
+              throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
+          }
+          
+          const doneAdditionalInfo = (!userInfo.phoneNumber || !userInfo.nickname || !userInfo.gender) ? false : true;
+        
+          const tokenInfo = await this.tokenRepository.getTokenInfo(snsId);
 
-  login = async (snsId, password) => {
-    const userInfo = await this.userRepositories.getUserInfo(snsId);
-    //   console.log("userInfo-->", userInfo);
+          if (!tokenInfo) { // 최초 로그인
+              const token = jwt.sign({ snsId: snsId }, process.env.SECRET_KEY, { expiresIn: "24h" });
+              const refreshToken = jwt.sign({}, process.env.SECRET_KEY, { expiresIn: "240h", });
+              await this.tokenRepository.createToken(snsId, token, refreshToken);
+
+              return { jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' };
+          } else {
+              const token = jwt.sign({ snsId: snsId }, process.env.SECRET_KEY, { expiresIn: "24h" });
+              const refreshToken = jwt.sign({}, process.env.SECRET_KEY, { expiresIn: "240h", });
+              await this.tokenRepository.updateToken(snsId, token, refreshToken);
+
+              return { jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' };
+          }
+      };  
 
     if (!userInfo) {
       throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.");
