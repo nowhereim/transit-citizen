@@ -33,7 +33,7 @@ class AuthControllers {
       }
       const isEmpty = await this.authServices.checkAuthNumber(
         phoneNumber,
-        authCode
+        authCode,
       );
       if (isEmpty === null)
         return res.status(400).send({ error: "인증에 실패하였습니다" });
