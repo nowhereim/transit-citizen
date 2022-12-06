@@ -9,7 +9,7 @@ class AuthControllers {
 
   getUserPhoneNumber = async (req, res, next) => {
     try {
-      const { snsId } = res.locals.user;
+      const snsId = res.locals.user.user.snsId;
       const { phoneNumber } = req.body;
       if (!phoneNumber || phoneNumber.search(phoneCheck) === -1)
         return res.status(400).send({ error: "잘못된 형식입니다" });
