@@ -13,7 +13,7 @@ this.userControllers = new UserControllers();
 // 로컬 회원가입
 router.post(
   "/signup",
-  isNotLoggedIn,
+  // isNotLoggedIn,
   validationMiddleware(signupValidation.signup),
   this.userControllers.localSignUpInfo,
 );
