@@ -9,7 +9,7 @@ class ProfileControllers {
     // 프로필 업데이트 기능
     editProfileInfo = async (req, res) => {
         try {
-            const snsId = res.locals.user.user.snsId;
+            const { snsId } = res.locals.user;
             const { nickname, statusmessage } = req.body;
             const { representProfile, profileImage } = req.files;
 
@@ -52,7 +52,7 @@ class ProfileControllers {
     // 프로필 조회
     showProfileInfo = async (req, res) => {
         try {
-            const snsId = res.locals.user.user.snsId;
+            const { snsId }  = res.locals.user;
 
             if ( !snsId ) {
                 return res.status(400).send({ 
