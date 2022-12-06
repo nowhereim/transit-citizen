@@ -18,8 +18,8 @@ exports.signup = Joi.object({
     .max(20)
     .pattern(
       new RegExp(
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{10,20}$/
-      )
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{10,20}$/,
+      ),
     )
     .required()
     .messages({

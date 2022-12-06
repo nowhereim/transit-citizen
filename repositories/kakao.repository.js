@@ -18,6 +18,7 @@ class KakaoRepository {
     const newUser = await User.create({
       snsId: id,
       provider: "kakao",
+      password: "null",
     });
     return newUser;
   };
@@ -26,6 +27,7 @@ class KakaoRepository {
     const newUser = await User.create({
       snsId: id,
       provider: "google",
+      password: "null",
     });
     return newUser;
   };
@@ -34,6 +36,7 @@ class KakaoRepository {
     const newUser = await User.create({
       snsId: id,
       provider: "naver",
+      password: "null",
     });
     return newUser;
   };

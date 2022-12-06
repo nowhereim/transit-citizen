@@ -1,21 +1,26 @@
 const User = require("../schemas/user");
+const bcrpyt = require("bcrypt");
 
 class userRepositories {
-  createUserInfo_DB = async (snsId, nickname, phoneNumber, gender) => {
+  createLocalUserInfo_DB = async (snsId, password) => {
     try {
-      if (snsId) {
-        const createdUserInfoData = await User.findOneAndUpdate(
-          { snsId },
-          {
-            nickname,
-            phoneNumber,
-            gender,
-          }
-        );
-        return createdUserInfoData;
-      } else {
-        throw new Error("snsId 값이 없으면 유저 정보를 조회할 수 없습니다");
-      }
+      const repassword = await bcrpyt.hash(password, 5);
+      await User.create({
+        snsId,
+        password: repassword,
+        provider: "local",
+      });
+      return;
+    } catch (error) {
+      console.log(error.name);
+      console.log(error.message);
+    }
+  };
+
+  createUserInfo_DB = async (snsId, nickname, gender) => {
+    try {
+      await User.findOneAndUpdate({ snsId }, { nickname, gender });
+      return;
     } catch (error) {
       console.log(error.name);
       console.log(error.message);
@@ -66,6 +71,20 @@ class userRepositories {
     } catch (error) {
       console.log(error.name);
       console.log(error.message);
+    }
+  };
+
+  getUserInfo = async (snsId) => {
+    const userInfo = await User.findOne({ snsId });
+    return userInfo;
+  };
+
+  isSameUserId_DB = async (snsId) => {
+    try {
+      const data = await User.findOne({ snsId });
+      return data;
+    } catch (error) {
+      throw error;
     }
   };
 }
