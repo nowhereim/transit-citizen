@@ -80,6 +80,7 @@ class userControllers {
   login = async (req, res) => {
     try {
       const { userId, password } = req.body;
+      // console.log("password-->", password);
       const userData = await this.userServices.login(userId, password);
 
       res.status(200).send(userData);

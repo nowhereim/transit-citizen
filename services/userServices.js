@@ -78,8 +78,8 @@ class userServices {
 
     login = async (snsId, password) => {
           const userInfo = await this.userRepositories.getUserInfo(snsId);
-        //   console.log("userInfo-->", userInfo);
- 
+      //     console.log("userInfo-->", userInfo);
+      // console.log("password-->", password);
           if (!userInfo) {
               throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
           }

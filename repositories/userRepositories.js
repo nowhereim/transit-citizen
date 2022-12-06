@@ -1,5 +1,5 @@
 const User = require("../schemas/user");
-const Local = require("../schemas/local");
+// const Local = require("../schemas/local");
 const bcrpyt = require("bcrypt");
 
 class userRepositories {
@@ -77,7 +77,7 @@ class userRepositories {
 
 
   getUserInfo = async (snsId) => {
-    const userInfo = await User.findOne({ snsId });
+    const userInfo = await User.findOne({ snsId: snsId });
      return userInfo;
   }
   
