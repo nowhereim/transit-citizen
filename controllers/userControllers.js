@@ -22,7 +22,12 @@ class userControllers {
 
   getRepeuiredUserInfo = async (req, res, next) => {
     try {
+<<<<<<< HEAD
       const { snsId } = res.locals.user;
+=======
+      console.log(res.locals.user);
+      const snsId = res.locals.user.user.snsId;
+>>>>>>> 4f172a8 (hotfix 소셜로그인구현 및 프로필,DB연동,미들웨어 수정 및 연동)
       const representProfile = req.file.buffer;
       const { nickname, gender } = req.body;
       if (!snsId)
