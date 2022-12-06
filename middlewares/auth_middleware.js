@@ -65,7 +65,7 @@ module.exports = async (req, res, next) => {
     } else {// 3. 액세스가 만료된 게 아니라면 (+위변조도 없어야) 무조건 로그인 허용.
       // console.log( "---통과--->", decoded.snsId);
       await User.findOne({ snsId: decoded.snsId }).then((user) => {
-        res.locals.user = {user:user};
+        res.locals.user = user;
         next();
       });
     }
