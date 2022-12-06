@@ -1,9 +1,10 @@
 const Auth = require("../schemas/auth");
+const User = require("../schemas/user");
 
 class AuthRepositories {
   findUserData = async ({ snsId, phoneNumber, authCode }) => {
     try {
-      const data = await Auth.findOne({ phoneNumber, authCode });
+      const data = await Auth.findOne({ snsId, phoneNumber, authCode });
       if (data !== null)
         await User.findOneAndUpdate({ snsId }, { phoneNumber });
       return data;

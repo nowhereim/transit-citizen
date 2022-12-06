@@ -24,9 +24,10 @@ class AuthServices {
     }
   };
 
-  checkAuthNumber = async (phoneNumber, authCode) => {
+  checkAuthNumber = async (snsId, phoneNumber, authCode) => {
     try {
       const data = await this.authRepositories.findUserData({
+        snsId,
         phoneNumber,
         authCode,
       });
