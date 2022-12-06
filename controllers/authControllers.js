@@ -22,7 +22,7 @@ class AuthControllers {
 
   compareAuthInputWithOurs = async (req, res, next) => {
     try {
-      const { snsId } = res.locals.user;
+      const snsId = res.locals.user.user.snsId;
       const { phoneNumber, authCode } = req.body;
       if (!phoneNumber || !authCode)
         return res.status(400).send({ error: "잘못된 형식입니다" });

@@ -25,11 +25,10 @@ class KakaoController {
           "X-Naver-Client-Secret": process.env.NAVER_CLIENT_SECRET,
         },
       };
-      const result = await request.get(options);
 
+      const result = await request.get(options);
       // string 형태로 값이 담기니 JSON 형식으로 parse를 해줘야 한다.
       const token = JSON.parse(result).access_token;
-
       // 발급 받은 access token을 사용해 회원 정보 조회 API를 사용한다.
       const info_options = {
         url: "https://openapi.naver.com/v1/nid/me",
@@ -37,14 +36,10 @@ class KakaoController {
       };
 
       const info_result = await request.get(info_options);
-
       // string 형태로 값이 담기니 JSON 형식으로 parse를 해줘야 한다.
       const naverUserInfo = JSON.parse(info_result).response;
-
       const isUser = await this.kakaoRepository.findOneById(naverUserInfo.id);
-
       const donePhoneNumber = !isUser || !isUser.phoneNumber ? false : true;
-
       const doneAdditionalInfo =
         !isUser || !isUser.phoneNumber || !isUser.nickname || !isUser.gender
           ? false
@@ -54,7 +49,7 @@ class KakaoController {
         const token = jwt.sign(
           { snsId: isUser.snsId },
           process.env.SECRET_KEY,
-          { expiresIn: "30s" },
+          { expiresIn: "24h" },
         );
         const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
           expiresIn: "240h",
