@@ -6,8 +6,10 @@ const ProfileRoutes = require("./profileRoutes");
 const kakaoRouter = require("./kakao.js");
 const testRouter = require("./test.js");
 const oauthRoutes = require("./kakaoLogin");
-
+const gauthRoutes = require("./googleLogin");
 router.use("/oauth", oauthRoutes);
+
+router.use("/gauth", gauthRoutes);
 
 router.use("/auth", kakaoRouter);
 

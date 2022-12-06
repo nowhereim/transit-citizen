@@ -1,18 +1,13 @@
 const User = require("../schemas/user");
-const Local = require("../schemas/local");
 const bcrpyt = require("bcrypt");
 
 class userRepositories {
-  createLocalUserInfo_DB = async (userId, password) => {
+  createLocalUserInfo_DB = async (snsId, password) => {
     try {
       const repassword = await bcrpyt.hash(password, 5);
-      const localUserInfo = await Local.create({
-        userId,
-        password: repassword,
-      });
       await User.create({
-        userLocal: localUserInfo._id,
-        snsId: "null",
+        snsId,
+        password: repassword,
         provider: "local",
       });
       return;
@@ -22,21 +17,10 @@ class userRepositories {
     }
   };
 
-  createUserInfo_DB = async (snsId, nickname, phoneNumber, gender) => {
+  createUserInfo_DB = async (snsId, nickname, gender) => {
     try {
-      if (snsId) {
-        const createdUserInfoData = await User.findOneAndUpdate(
-          { snsId },
-          {
-            nickname,
-            phoneNumber,
-            gender,
-          }
-        );
-        return createdUserInfoData;
-      } else {
-        throw new Error("snsId 값이 없으면 유저 정보를 조회할 수 없습니다");
-      }
+      await User.findOneAndUpdate({ snsId }, { nickname, gender });
+      return;
     } catch (error) {
       console.log(error.name);
       console.log(error.message);
@@ -90,30 +74,17 @@ class userRepositories {
     }
   };
 
-
-  getUserInfo = async (userId) => {
-    const userInfo = await Local.findOne({ userId });
-     return userInfo;
-  }
-  
-  getUserInfo_join = async (id) => {
-    // const userInfo = await User.findById(id).populate("");
-    const userInfo = await User.findOne({ userLocal : id }).populate("");
+  getUserInfo = async (snsId) => {
+    const userInfo = await User.findOne({ snsId: snsId });
      return userInfo;
   }
 
-  isSameUserId_DB = async (userId) => {
+  isSameUserId_DB = async (snsId) => {
     try {
-      if (userId) {
-        const data = await Local.findOne({ userId });
-        console.log(data);
-        return data;
-      } else {
-        throw error;
-      }
+      const data = await User.findOne({ snsId });
+      return data;
     } catch (error) {
-      console.log(error.name);
-      console.log(error.message);
+      throw error;
     }
   };
 }

@@ -4,41 +4,46 @@ class userControllers {
   constructor() {
     this.userServices = new UserServices();
   }
-
-  // 회원가입
+  // 로컬 회원가입
   localSignUpInfo = async (req, res, next) => {
     try {
-      const { userId, password, confirmpassword } = req.body;
-      await this.userServices.createLocalUserInfo(userId, password);
+      const { snsId, password, confirmpassword } = req.body;
+      const userIdCheck = await this.userServices.checkIsSameUserId(snsId);
+      if (userIdCheck === false)
+        return res.status(400).send({ error: "중복된 아이디 입니다" });
+      await this.userServices.createLocalUserInfo(snsId, password);
       return res.status(200).send({ msg: "성공" });
     } catch (error) {
       next(error);
     }
   };
 
-  getRepeuiredUserInfo = async (req, res) => {
+  getRepeuiredUserInfo = async (req, res, next) => {
     try {
-      const snsId = res.locals.user.user.snsId;
+      const { snsId } = res.locals.user;
       const representProfile = req.file.buffer;
-      const { nickname, phoneNumber, gender } = req.body;
-
-      await this.userServices.getUserRequiredProfile(snsId, representProfile);
-
-      await this.userServices.createUserRequiredInfo(
-        snsId,
+      const { nickname, gender } = req.body;
+      if (!snsId)
+        return res
+          .status(400)
+          .send({ error: "아이디 값을 받아올 수 없습니다" });
+      const userNicknameCheck = await this.userServices.checkIsSameUser(
         nickname,
-        phoneNumber,
-        gender
       );
-
-      res.status(200).json({
-        msg: "유저 필수 정보가 입력되었습니다.",
-        snsId:res.locals.user.user.snsId,
-        newtoken: res.locals.user.newToken,
-      });
+      if (userNicknameCheck === false)
+        return res.status(400).send({ error: "중복된 닉네임 입니다" });
+      await this.userServices.getUserRequiredProfile(snsId, representProfile);
+      await this.userServices.createUserRequiredInfo(snsId, nickname, gender);
+      return res
+        .status(200)
+        .send({
+          msg: "유저 필수 정보가 입력되었습니다.",
+          snsId: res.locals.user.user.snsId,
+          newtoken: res.locals.user.newToken,
+        });
     } catch (error) {
       res.status(400).send({ error: "필수 정보를 모두 입력해주세요" });
-      console.log(error);
+      next(error);
     }
   };
 
@@ -46,62 +51,40 @@ class userControllers {
     try {
       const { nickname } = req.body;
       const userNicknameCheck = await this.userServices.checkIsSameUser(
-        nickname
+        nickname,
       );
-      if (userNicknameCheck === false) {
-        return res.status(400).send({
-          error: "중복된 유저입니다.",
-        });
-      } else {
-        return res.status(200).send({
-          msg: "사용 가능한 닉네임 입니다.",
-        });
-      }
+      if (userNicknameCheck === false)
+        return res.status(400).send({ error: "중복된 닉네임 입니다." });
+      return res.status(200).send({ msg: "사용 가능한 닉네임 입니다." });
     } catch (error) {
-      res.status(400).send({
-        error: "예상치 못한 에러 발생",
-      });
-      console.log(error.name);
-      console.log(error.message);
+      next(error);
     }
   };
 
   // 아이디 중복 확인
-  userIdCheck = async (req, res) => {
+  userIdCheck = async (req, res, next) => {
     try {
-      const { userId } = req.body;
-      const userIdCheck = await this.userServices.checkIsSameUserId(userId);
-      if (userIdCheck === false) {
-        return res.status(400).send({
-          error: "중복된 아이디입니다.",
-        });
-      } else {
-        return res.status(200).send({
-          msg: "사용 가능한 아이디 입니다.",
-        });
-      }
+      const { snsId } = req.body;
+      if (!snsId) return res.status(400).send({ error: "아이디를 입력하세요" });
+      const userIdCheck = await this.userServices.checkIsSameUserId(snsId);
+      if (userIdCheck === false)
+        return res.status(400).send({ error: "중복된 아이디입니다." });
+      return res.status(200).send({ msg: "사용 가능한 아이디 입니다." });
     } catch (error) {
-      res.status(400).send({
-        error: "예상치 못한 에러 발생",
-      });
-      console.log(error.name);
-      console.log(error.message);
+      next(error);
     }
   };
-
 
   login = async (req, res) => {
     try {
-        const {userId, password} = req.body;
-        const userData = await this.userServices.login(userId, password);
-      
-        res.status(200).send(userData);
+      const { snsId, password } = req.body;
+      // console.log("password-->", password);
+      const userData = await this.userServices.login(snsId, password);
+      res.status(200).send(userData);
     } catch (error) {
-        res.status(400).json({message: error.message})
+      res.status(400).json({ message: error.message });
     }
   };
-
-
 }
 
 module.exports = userControllers;

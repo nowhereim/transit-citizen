@@ -1,25 +1,25 @@
 const cloudinary = require("cloudinary");
 const DatauriParser = require("datauri/parser");
 const parser = new DatauriParser();
-const userRepositories = require('../repositories/userRepositories');
+const userRepositories = require("../repositories/userRepositories");
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 // const Token = require("../schemas/token");
 const TokenRepository = require("../repositories/token.repository");
 
-
-
 class userServices {
   tokenRepository = new TokenRepository();
-    
+
   constructor() {
     this.userRepositories = new userRepositories();
   }
 
-  createLocalUserInfo = async (userId, password) => {
+  createLocalUserInfo = async (snsId, password) => {
     try {
-      await this.userRepositories.createLocalUserInfo_DB(userId, password);
+      console.log(snsId);
+      console.log("hello");
+      await this.userRepositories.createLocalUserInfo_DB(snsId, password);
       return;
     } catch (error) {
       console.log(error.name);
@@ -27,22 +27,13 @@ class userServices {
     }
   };
 
-  createUserRequiredInfo = async (snsId, nickname, phoneNumber, gender) => {
+  createUserRequiredInfo = async (snsId, nickname, gender) => {
     try {
-      if (snsId) {
-        const createdUserInfoData =
-          await this.userRepositories.createUserInfo_DB(
-            snsId,
-            nickname,
-            phoneNumber,
-            gender
-          );
-        return createdUserInfoData;
-      } else {
-        throw new Error("snsId 값이 없으면 유저 정보를 조회할 수 없습니다");
-      }
+      await this.userRepositories.createUserInfo_DB(snsId, nickname, gender);
+      return;
     } catch (error) {
-      console.log(error);
+      console.log(error.name);
+      console.log(error.message);
     }
   };
 
@@ -82,58 +73,71 @@ class userServices {
     } catch (error) {
       throw new Error("nickname이 정의되지 않았습니다");
     }
-
   };
 
-      login = async (userId, password) => {
-          const userInfo = await this.userRepositories.getUserInfo(userId); //
-          // console.log("userInfo-->", userInfo);
+
+  login = async (snsId, password) => {
+    const userInfo = await this.userRepositories.getUserInfo(snsId);
+    // console.log("userInfo-->", userInfo);
+
+    if (!userInfo) {
+      throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.");
+    }
+    const same = bcrypt.compareSync(password, userInfo.password);
+    if (!same) {
+      throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.");
+    }
  
-          if (!userInfo) {
-              throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
-          }
-          const same = bcrypt.compareSync(password, userInfo.password);
-          if (!same) {
-              throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
-          }
+    const donePhoneNumber = (!userInfo.phoneNumber) ? false : true;
 
-          const userInfo_join = await this.userRepositories.getUserInfo_join(userInfo._id);
-          // console.log("userInfo_join-->", userInfo_join);
+    const doneAdditionalInfo =
+      !userInfo.nickname || !userInfo.representProfile
+        ? false
+        : true;
 
-          const doneAdditionalInfo = (!userInfo_join.phoneNumber || !userInfo_join.nickname || !userInfo_join.gender) ? false : true;
-        
-          // const tokenInfo = await Token.findOne({ snsId: snsId });
-          const tokenInfo = await this.tokenRepository.getTokenInfo(userId);
+    const tokenInfo = await this.tokenRepository.getTokenInfo(snsId);
 
-          if (!tokenInfo) { // 최초 로그인
-              const token = jwt.sign({ userId: userId }, process.env.SECRET_KEY, { expiresIn: "24h" });
-              const refreshToken = jwt.sign({}, process.env.SECRET_KEY, { expiresIn: "240h", });
-              // await Token.create({ snsId: snsId, accessToken: token, refreshToken: refreshToken });
-              await this.tokenRepository.createToken(userId, token, refreshToken);
+    if (!tokenInfo) {
+      // 최초 로그인
+      const token = jwt.sign({ snsId: snsId }, process.env.SECRET_KEY, {
+        expiresIn: "24h",
+      });
+      const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
+        expiresIn: "240h",
+      });
+      await this.tokenRepository.createToken(snsId, token, refreshToken);
 
-              return { jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' };
-          } else {
-              const token = jwt.sign({ userId: userId }, process.env.SECRET_KEY, { expiresIn: "24h" });
-              const refreshToken = jwt.sign({}, process.env.SECRET_KEY, { expiresIn: "240h", });
-              // await Token.updateOne({ snsId: snsId }, { $set: { accessToken: token, refreshToken: refreshToken } });
-              await this.tokenRepository.updateToken(userId, token, refreshToken);
-
-              return { jwtToken: token, doneAdditionalInfo: doneAdditionalInfo, message: '로그인하였습니다.' };
-          }
+      return {
+        jwtToken: token,
+        donePhoneNumber: donePhoneNumber,
+        doneAdditionalInfo: doneAdditionalInfo,
+        message: "로그인하였습니다.",
       };
+    } else {
+      const token = jwt.sign({ snsId: snsId }, process.env.SECRET_KEY, {
+        expiresIn: "24h",
+      });
+      const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
+        expiresIn: "240h",
+      });
+      await this.tokenRepository.updateToken(snsId, token, refreshToken);
 
+      return {
+        jwtToken: token,
+        donePhoneNumber: donePhoneNumber,
+        doneAdditionalInfo: doneAdditionalInfo,
+        message: "로그인하였습니다.",
+      };
+    }
+  };
 
-
-  checkIsSameUserId = async (userId) => {
+  checkIsSameUserId = async (snsId) => {
     try {
-      if (userId) {
-        const data = await this.userRepositories.isSameUserId_DB(userId);
-        console.log(`service ${data}`);
-        if (data !== null) return false; // 유저 아이디 중복 O
-        return;
-      }
+      const data = await this.userRepositories.isSameUserId_DB(snsId);
+      if (data !== null) return false; // 유저 아이디 중복 O
+      return;
     } catch (error) {
-      throw new Error("userId가 정의되지 않았습니다");
+      throw error;
     }
   };
 }

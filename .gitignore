@@ -9,3 +9,6 @@ loginController.js
 data
 *.csv
 kakaoLogin.js
+app2.js
+googleLogin.js
+servertest.json

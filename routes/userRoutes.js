@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const userValidation = require("../validation/userValidation");
 const signupValidation = require("../validation/signupValidation");
 const validationMiddleware = require("../middlewares/validationMiddleware");
@@ -16,7 +15,7 @@ router.post(
   "/signup",
   isNotLoggedIn,
   validationMiddleware(signupValidation.signup),
-  this.userControllers.localSignUpInfo
+  this.userControllers.localSignUpInfo,
 );
 
 // 유저 정보 입력
@@ -25,12 +24,11 @@ router.post(
   authMiddleware,
   representProfileUpload,
   validationMiddleware(userValidation.user),
-  this.userControllers.getRepeuiredUserInfo
+  this.userControllers.getRepeuiredUserInfo,
 );
 
 // 유저 닉네임 중복 검사
 router.post("/check", authMiddleware, this.userControllers.nicknameCheck);
-
 
 // 로그인 (/user/login)
 router.post("/login", this.userControllers.login);
