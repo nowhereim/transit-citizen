@@ -8,6 +8,10 @@ class userControllers {
   localSignUpInfo = async (req, res, next) => {
     try {
       const { snsId, password, confirmpassword } = req.body;
+      if (password.includes(snsId))
+        return res
+          .status(400)
+          .send({ error: "패스워드에 아이디 값 사용 불가" });
       const userIdCheck = await this.userServices.checkIsSameUserId(snsId);
       if (userIdCheck === false)
         return res.status(400).send({ error: "중복된 아이디 입니다" });
@@ -28,7 +32,7 @@ class userControllers {
           .status(400)
           .send({ error: "아이디 값을 받아올 수 없습니다" });
       const userNicknameCheck = await this.userServices.checkIsSameUser(
-        nickname,
+        nickname
       );
       if (userNicknameCheck === false)
         return res.status(400).send({ error: "중복된 닉네임 입니다" });
@@ -49,7 +53,7 @@ class userControllers {
     try {
       const { nickname } = req.body;
       const userNicknameCheck = await this.userServices.checkIsSameUser(
-        nickname,
+        nickname
       );
       if (userNicknameCheck === false)
         return res.status(400).send({ error: "중복된 닉네임 입니다." });
