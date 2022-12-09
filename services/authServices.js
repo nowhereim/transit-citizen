@@ -8,14 +8,13 @@ class AuthServices {
     this.sensServices = new SensServices();
   }
 
-  sendAuthorityCheckMessage = async (snsId, phoneNumber) => {
+  sendAuthorityCheckMessage = async (phoneNumber) => {
     try {
       // 인증 번호 6자리 발급 ( 3분 후 만료 )
       const authNumber = crypto.randomBytes(6).toString("hex").slice(6);
       const message = `:: 환승시민 :: 본인 확인을 위해 인증번호 [${authNumber}]를 입력해주세요`;
       this.sensServices.send_message(phoneNumber, message);
       await this.authRepositories.pushPhoneAuthData({
-        snsId,
         phoneNumber,
         authCode: authNumber,
       });
