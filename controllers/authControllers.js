@@ -19,22 +19,27 @@ class AuthControllers {
     }
   };
 
+  // 중복된 휴대폰 번호 : true, 중복이 안된 휴대폰 번호 :false
   compareAuthInputWithOurs = async (req, res, next) => {
     try {
-      const snsId = res.locals.user.user.snsId;
       const { phoneNumber, authCode } = req.body;
       if (!phoneNumber || !authCode)
         return res.status(400).send({ error: "잘못된 형식입니다" });
       if ((phoneNumber.search(phoneCheck) || authCode.search(authCheck)) === -1)
         return res.status(400).send({ error: "잘못된 인증번호 입니다" });
       const isEmpty = await this.authServices.checkAuthNumber(
-        snsId,
         phoneNumber,
         authCode
       );
       if (isEmpty === null)
-        return res.status(400).send({ error: "인증에 실패하였습니다" });
-      return res.status(200).send({ msg: "인증되었습니다" });
+        return res.status(400).send({
+          isSameNumber: true,
+          error: "인증에 실패하였습니다",
+        });
+      return res.status(200).send({
+        isSameNumber: false,
+        msg: "인증되었습니다",
+      });
     } catch (error) {
       next(error);
     }
