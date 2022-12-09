@@ -10,39 +10,31 @@ module.exports = async (req, res, next) => {
   const [authType, authToken] = (authorization || "").split(" ");
 
   if (!authToken || authType !== "Bearer") {
-    res
-      .status(401)
-      .send({
-        ok: 1,
-        errorMessage: "비정상적인 활동이 감지되어 로그아웃됩니다(1).",
-      });
+    res.status(401).send({
+      ok: 1,
+      errorMessage: "비정상적인 활동이 감지되어 로그아웃됩니다(1).",
+    });
     return;
   }
 
   try {
     const authResult = verify(authToken); // access token 검증 -> 위변조 없어야하며 + expired여야 함.
-
     if (authResult.message === "invalid signature") {
       // 위변조 검증
-      res
-        .status(401)
-        .send({
-          ok: 2,
-          errorMessage: "비정상적인 활동이 감지되어 로그아웃됩니다(2-1).",
-        });
+      res.status(401).send({
+        ok: 2,
+        errorMessage: "비정상적인 활동이 감지되어 로그아웃됩니다(2-1).",
+      });
       return;
     }
-
     const decoded = jwt.decode(authToken); // access token 디코딩하여 user의 정보를 가져옴. (만료되든 안되든 무조건 가져욤)
 
     if (decoded === null) {
       // 디코딩 결과가 없으면 권한이 없음을 응답. (=애시당초 잘못된 토큰)
-      res
-        .status(401)
-        .send({
-          ok: 2,
-          errorMessage: "비정상적인 활동이 감지되어 로그아웃됩니다(2).",
-        });
+      res.status(401).send({
+        ok: 2,
+        errorMessage: "비정상적인 활동이 감지되어 로그아웃됩니다(2).",
+      });
       return;
     }
 
@@ -56,12 +48,10 @@ module.exports = async (req, res, next) => {
 
       if (refreshResult.ok === false) {
         // 1. access token이 만료되고, refresh token도 만료 된 경우 => 새로 로그인해야. ()
-        res
-          .status(401)
-          .send({
-            ok: 3,
-            errorMessage: "액세스만료, 리프레시만료. 로그아웃됩니다(3).",
-          });
+        res.status(401).send({
+          ok: 3,
+          errorMessage: "액세스만료, 리프레시만료. 로그아웃됩니다(3).",
+        });
       } else {
         // 2. access token이 만료되고, refresh token은 만료되지 않은 경우 => 새로운 access token을 발급 후 클라에게 반환.
         const token = await Token.findOne({ snsId: decoded.snsId });
@@ -69,13 +59,11 @@ module.exports = async (req, res, next) => {
           // console.log("token.accessToken", token.accessToken);
           // console.log("authToken", authToken);
 
-          res
-            .status(401)
-            .send({
-              ok: 4,
-              errorMessage:
-                "만료된 토큰으로 한번만 재발급이 가능합니다. 로그아웃됩니다(4).",
-            });
+          res.status(401).send({
+            ok: 4,
+            errorMessage:
+              "만료된 토큰으로 한번만 재발급이 가능합니다. 로그아웃됩니다(4).",
+          });
         } else {
           const newToken = jwt.sign(
             { snsId: decoded.snsId },

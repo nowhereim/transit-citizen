@@ -12,3 +12,7 @@ kakaoLogin.js
 app2.js
 googleLogin.js
 servertest.json
+schemas/schemas/*.js
+test
+naverLogin.js
+깃허브자료정리
