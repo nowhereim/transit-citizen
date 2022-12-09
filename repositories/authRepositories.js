@@ -1,20 +1,17 @@
 const Auth = require("../schemas/auth");
-const User = require("../schemas/user");
 
 class AuthRepositories {
-  findUserData = async ({ phoneNumber, authCode }) => {
+  findPhoneAuthData = async ({ phoneNumber, authCode }) => {
     try {
-      const data = await Auth.findOne({ phoneNumber, authCode });
-      return data;
+      return await Auth.findOne({ phoneNumber, authCode });
     } catch (error) {
       throw error;
     }
   };
 
-  destroyUserData = async (phoneNumber) => {
+  getSamePhoneNumber = async (phoneNumber) => {
     try {
-      await Auth.deleteOne({ phoneNumber });
-      return;
+      return await Auth.findOne({ phoneNumber });
     } catch (error) {
       throw error;
     }
