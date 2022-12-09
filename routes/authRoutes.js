@@ -8,6 +8,10 @@ this.authControllers = new AuthControllers();
 router.post("/phone", this.authControllers.getUserPhoneNumber);
 
 // 인증 번호 검증
-router.post("/compare", this.authControllers.compareAuthInputWithOurs);
+router.post(
+  "/compare",
+  authMiddleware,
+  this.authControllers.compareAuthInputWithOurs
+);
 
 module.exports = router;
