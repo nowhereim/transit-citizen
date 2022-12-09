@@ -6,9 +6,6 @@ const now = moment().format("YYYY-MM-DD HH:mm:ss");
 
 const authSchema = new Schema(
   {
-    snsId: {
-      type: String,
-    },
     phoneNumber: {
       type: String,
     },
