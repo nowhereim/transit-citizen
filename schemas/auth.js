@@ -3,9 +3,6 @@ const { Schema } = mongoose;
 
 const authSchema = new Schema(
   {
-    snsId: {
-      type: String,
-    },
     phoneNumber: {
       type: String,
     },
