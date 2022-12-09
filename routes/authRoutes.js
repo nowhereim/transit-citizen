@@ -5,13 +5,9 @@ const AuthControllers = require("../controllers/authControllers");
 this.authControllers = new AuthControllers();
 
 // 인증 메시지 보내기
-router.post("/phone", authMiddleware, this.authControllers.getUserPhoneNumber);
+router.post("/phone", this.authControllers.getUserPhoneNumber);
 
 // 인증 번호 검증
-router.post(
-  "/compare",
-  authMiddleware,
-  this.authControllers.compareAuthInputWithOurs
-);
+router.post("/compare", this.authControllers.compareAuthInputWithOurs);
 
 module.exports = router;

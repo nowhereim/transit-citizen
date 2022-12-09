@@ -2,11 +2,9 @@ const Auth = require("../schemas/auth");
 const User = require("../schemas/user");
 
 class AuthRepositories {
-  findUserData = async ({ snsId, phoneNumber, authCode }) => {
+  findUserData = async ({ phoneNumber, authCode }) => {
     try {
-      const data = await Auth.findOne({ snsId, phoneNumber, authCode });
-      if (data !== null)
-        await User.findOneAndUpdate({ snsId }, { phoneNumber });
+      const data = await Auth.findOne({ phoneNumber, authCode });
       return data;
     } catch (error) {
       throw error;
@@ -22,9 +20,9 @@ class AuthRepositories {
     }
   };
 
-  pushPhoneAuthData = async (snsId, phoneNumber, authCode) => {
+  pushPhoneAuthData = async (phoneNumber, authCode) => {
     try {
-      await Auth.create(snsId, phoneNumber, authCode);
+      await Auth.create(phoneNumber, authCode);
       return;
     } catch (error) {
       throw error;
