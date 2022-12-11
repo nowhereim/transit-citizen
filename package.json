@@ -13,6 +13,7 @@
   "dependencies": {
     "@elastic/elasticsearch": "^8.5.0",
     "@socket.io/redis-adapter": "^8.0.0",
+    "@socket.io/redis-emitter": "^5.0.0",
     "0d": "^0.0.1",
     "artillery": "^2.0.0-26",
     "aws-sdk": "^2.1253.0",
@@ -33,6 +34,7 @@
     "express-session": "^1.17.3",
     "helmet": "^6.0.1",
     "http": "^0.0.1-security",
+    "ioredis": "^5.2.4",
     "joi": "^17.7.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.4",
