@@ -2,7 +2,6 @@ const express = require("express");
 const routes = require("./routes");
 const app = express();
 const cors = require("cors");
-// const { Server } = require("socket.io");
 const server = require("http").createServer(app);
 const upload = require("./randomChat/upload");
 const deleteim = require("./randomChat/delete");
@@ -10,6 +9,7 @@ const connect = require("./schemas");
 const cloudinaryConfig = require("./config/cloudconfig");
 const helmet = require("helmet");
 const session = require("express-session");
+
 app.use(helmet.frameguard());
 app.use(helmet.hidePoweredBy({ setTo: "PHP 8.0.26" }));
 app.use(helmet.hsts());
