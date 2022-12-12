@@ -13,4 +13,8 @@ const authSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Auth", authSchema);
+const Auth = mongoose.model("Auth", authSchema);
+
+Auth.watch().on("change", (log) => console.log(log));
+
+module.exports = Auth;
