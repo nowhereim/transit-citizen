@@ -33,7 +33,7 @@
 백엔드 팀  `BE`  
 |팀내 포지션| 이름 | 깃허브 | 담당기능 |
 |--------|-------|------|-------|
-|리더|안태환|https://github.com/nowhereim| CI/CD , passport(소셜로그인) , socket.io (매칭 & 채팅) ,<br> AWS 인프라 전체 , 보안, 부하테스트 |
+|리더|안태환|https://github.com/nowhereim| CI/CD , passport(소셜로그인) ,<br>  socket.io (매칭 & 채팅) ,<br> AWS 인프라 전체 , 보안, 부하테스트 |
 |팀원|성용환|https://github.com/tllptop| 로그인 |
 |팀원|오윤지|https://github.com/doodlerrrr| 회원가입 |
 
