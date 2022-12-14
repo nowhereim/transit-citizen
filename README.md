@@ -108,6 +108,6 @@
 </div>
 
 ##  ⚡트러블 슈팅
-[🎵 환승시민 Backend 트러블 슈팅 보러가기 ](https://www.notion.so/23191c843a9144998eaca6b5e7e4544d)
+[🎵 환승시민 Backend 트러블 슈팅 보러가기 ](https://electric-lord-3b1.notion.site/23191c843a9144998eaca6b5e7e4544d)
 
 
