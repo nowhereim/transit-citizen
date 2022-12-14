@@ -75,7 +75,6 @@
 5. 🙋‍♂️마이 페이지에서는 자신의 프로필을 수정하고 조금 더 매력적인 사진으로 변경할수있답니다!!
 <!--  <br>[🎵 환승시민 브로셔 보러가기 ](https://electric-lord-3b1.notion.site/9d381bfc771040eba7f92b75725a4167) -->
 
-   <!-- 
 ## 🍀API 명세
 
 |    _   |  Method |   URI    |  REQUEST  |  RESPONSE  | 추가 설명 |
