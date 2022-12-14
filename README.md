@@ -34,8 +34,8 @@
 |팀내 포지션| 이름 | 깃허브 |
 |--------|-------|------|
 |리더|안태환|https://github.com/nowhereim|
-|팀원|성용환|https://github.com/tlptop|
-|팀원|오윤지|https://github.com/doodlerrr|
+|팀원|성용환|https://github.com/tllptop|
+|팀원|오윤지|https://github.com/doodlerrrr|
 
 프론트엔드 팀 `FE`
 |팀내 포지션| 이름 | 깃허브 |
