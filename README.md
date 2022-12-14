@@ -1,11 +1,5 @@
 
-# 💗 코드 네임 : 환승 시민 🚆 💗
-
-" 둘이 어떻게 만났어? "  
-### " 우린 1호선에서 만났어. "  
-
-<img alt="킹받는꼬맹이1" style="display: block; margin:0 auto; width:300px" src="https://res.cloudinary.com/dtkt6x68f/image/upload/v1668988410/github/60dcb93b1c5f46364f60f488b70aff9e_res_pwjpia.jpg"> <br>
-<img alt="킹받는꼬맹이2" style="display: block; margin:0 auto; width:200px" src="https://res.cloudinary.com/dtkt6x68f/image/upload/v1668989263/github/3f394bc730abad7b4a07afa44112a444_res_agshcz.jpg">  
+#  프로젝트명 : 환승 시민 🚆 
 
 ![로고오](https://user-images.githubusercontent.com/113084907/207002677-d4828de8-61cd-43ca-950f-2d636a13e115.jpg)
 
