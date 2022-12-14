@@ -30,18 +30,18 @@
 
 ---
 백엔드 팀  `BE`  
-|팀내 포지션| 한 줄 소개 | 이름 | 깃허브 | 블로그 |
-|--------|----------|-------|------|-------|
-|리더| 레드 어몽이 |안태환|https://github.com/nowhereim|
-|팀원| 마약 옥수수 |성용환|https://github.com/tlptop|
-|팀원| 잇몸 알파카 |오윤지|https://github.com/doodlerrr|
+|팀내 포지션| 이름 | 깃허브 |
+|--------|-------|------|
+|리더|안태환|https://github.com/nowhereim|
+|팀원|성용환|https://github.com/tlptop|
+|팀원|오윤지|https://github.com/doodlerrr|
 
 프론트엔드 팀 `FE`
-|팀내 포지션| 한 줄 소개 | 이름 | 깃허브 | 블로그 |
-|--------|----------|-------|------|-------|
-|부리더|   |김재우 |https://github.com/wyswhsl21|||
-|팀원 |   |남해리|https://github.com/NSunR|||
-|팀원 |   |이상현|https://github.com/shlee1027|||
+|팀내 포지션| 이름 | 깃허브 |
+|--------|-------|------|
+|부리더|김재우 |https://github.com/wyswhsl21|
+|팀원 |남해리|https://github.com/NSunR|
+|팀원 |이상현|https://github.com/shlee1027|
 <br/>
 
 ## ⚙️ 개발환경 및 라이브러리
