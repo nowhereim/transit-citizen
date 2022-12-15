@@ -1,4 +1,3 @@
-<!-- 
 # 환승시민
 
 ![로고오](https://user-images.githubusercontent.com/113084907/207002677-d4828de8-61cd-43ca-950f-2d636a13e115.jpg)
@@ -34,10 +33,10 @@
 백엔드 팀  `BE`  
 |팀내 포지션| 이름 | 깃허브 | 담당기능 |
 |--------|-------|------|-------|
-|리더|안태환|https://github.com/nowhereim| CI/CD , passport(소셜로그인) , socket.io (매칭 & 채팅) , AWS 인프라 전체 , 
-보안, 부하테스트 |
-|팀원|성용환|https://github.com/tllptop| 회원가입 |
-|팀원|오윤지|https://github.com/doodlerrrr| 일반로그인 |
+|리더|안태환|https://github.com/nowhereim| CI/CD , passport(소셜로그인) ,<br>  socket.io (매칭 & 채팅) ,<br> AWS 인프라 전체 , 보안, 부하테스트 |
+|팀원|오윤지|https://github.com/doodlerrrr| 회원가입 , 유저프로필 |
+|팀원|성용환|https://github.com/tllptop| 일반로그인 |
+
 
 프론트엔드 팀 `FE`
 |팀내 포지션| 이름 | 깃허브 |
@@ -77,7 +76,6 @@
 5. 🙋‍♂️마이 페이지에서는 자신의 프로필을 수정하고 조금 더 매력적인 사진으로 변경할수있답니다!!
 <!--  <br>[🎵 환승시민 브로셔 보러가기 ](https://electric-lord-3b1.notion.site/9d381bfc771040eba7f92b75725a4167) -->
 
-   <!-- 
 ## 🍀API 명세
 
 |    _   |  Method |   URI    |  REQUEST  |  RESPONSE  | 추가 설명 |
@@ -105,7 +103,7 @@
 
 
 > **Nginx**
-- certbot을 이용하여 해당 도메인에 대한 인증서가 발급해(.pem 파일) Https로 보안을 강화 하였습니다.
+- Nginx의 reverse proxy 를 통해 클라이언트요청을 nginx가 대신 받음으로써 서버의 정보를 숨길수있다는 장점을 이용하기위해 적용하였습니다.
 
 <br/>
 </div>
@@ -114,6 +112,3 @@
 [🎵 환승시민 Backend 트러블 슈팅 보러가기 ](https://electric-lord-3b1.notion.site/23191c843a9144998eaca6b5e7e4544d)
 
 
--->
-
-12-15일 업로드 예정입니다.
