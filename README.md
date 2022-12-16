@@ -91,7 +91,7 @@
 
 ## ⚒ 아키텍쳐 
 
-![qwe jpg drawio](https://user-images.githubusercontent.com/113084907/207002835-50b4fa8f-d4f5-4435-99a3-b802ec551c78.png)
+![Untitled Diagram (1)](https://user-images.githubusercontent.com/113084907/208006051-366332ad-6482-4ce7-80a1-55a8a0bed26e.jpg)
 
 ##  기술스텍
 
