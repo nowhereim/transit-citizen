@@ -35,7 +35,7 @@
 |--------|-------|------|-------|
 |리더|안태환|https://github.com/nowhereim| CI/CD , passport(소셜로그인) ,<br>  socket.io (매칭 & 채팅) ,<br> AWS 인프라 전체 , 보안, 부하테스트 |
 |팀원|오윤지|https://github.com/doodlerrrr| 문자인증서비스, 회원가입, 유저프로필,<br> 이미지처리 |
-|팀원|성용환|https://github.com/tllptop| 일반로그인 |
+|팀원|성용환|https://github.com/tllptop| 일반로그인 | 리프레시 토큰 |
 
 
 프론트엔드 팀 `FE`
