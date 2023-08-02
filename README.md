@@ -6,7 +6,6 @@
 
 <br/>
 
-## [🚉 환승시민 보러가기 ](https://team4-final-project.vercel.app/)
 ## [🚉 환승시민 노션 보러가기 ](https://www.notion.so/7899ad12f6a44190bef2aa4b53be9614)
 
 ## ⭐️ 프로젝트 소개
